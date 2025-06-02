@@ -1,0 +1,2 @@
+new:ProductsByUnit:Bananas:100
+new:ProductsByWeight:Lutenichka:50

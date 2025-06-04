@@ -82,8 +82,11 @@ public:
     void friend operator<<(std::ostream& direction, const String& str);
 
     String friend operator+(const String& str1, const String& str2);
-    static String toString(long long num);
-    static long long toNum(const String& str);
+
+    static String intToString(long long num);
+    static String doubleToString(double value, unsigned char percision);
+    static long long toInt(const String& str);
+    static long long toDouble(const String& str);
 
     operator const char* () const;
 

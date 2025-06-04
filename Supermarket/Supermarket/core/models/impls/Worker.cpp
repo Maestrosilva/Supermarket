@@ -1,0 +1,44 @@
+#include "..//headers//Worker.h"
+
+Worker::Worker(const String& firstName, const String& lastName, const String& phoneNumber, unsigned char age, const String& password) 
+	: id(String::intToString(IdGenerator::next(IdType::WORKER))), firstName(firstName), lastName(lastName), phoneNumber(phoneNumber),
+	age(age), password(Hasher::hash(password)) {}
+
+const String& Worker::getId() const { return this->id; }
+
+const String& Worker::getFirstName() const { return this->firstName; }
+
+const String& Worker::getLastName() const { return this->lastName; }
+
+const String& Worker::getPhoneNumber() const { return this->phoneNumber; }
+
+const String& toString() const {
+    String toReturn;
+    toReturn.append("Id: ").append(id).append(" ");
+    toReturn.append(Role::toString(getRole())).append(" ");
+    toReturn.append(firstName).append(" ");
+    toReturn.append(lastName).append(" ");
+    toReturn.append(phoneNumber).append(" ");
+    toReturn.append(String::intToString(age)).append(" ");
+    return toReturn;
+}
+
+unsigned char getAge() const { return this->age; }
+
+void Worker::serialize(std::ostream& os) const {
+    id.serialize(os);
+    firstName.serialize(os);
+    lastName.serialize(os);
+    phoneNumber.serialize(os);
+    os.write(reinterpret_cast<const char*>(&age), sizeof(age));
+    password.serialize(os);
+}
+
+void Worker::deserialize(std::istream& is) {
+    id.deserialize(is);
+    firstName.deserialize(is);
+    lastName.deserialize(is);
+    phoneNumber.deserialize(is);
+    is.read(reinterpret_cast<char*>(&age), sizeof(age));
+    password.deserialize(is);
+}

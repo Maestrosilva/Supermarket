@@ -1,11 +1,16 @@
 #pragma once
-#include "..//..//utils//headers//Vector.h"
-#include "..//..//utils//headers//String.h"
-#include "..//..//core//headers//System.h"
-#include "..//..//core//headers//Manager.h"
-#include "..//..//CommandHandler.h"
+#include "..//..//utils//_Utils.h"
+#include "..//..//core//System.h"
+#include "..//..//core//models//headers//Worker.h"
+#include "..//..//core//models//headers//Cashier.h"
+#include "..//..//core//models//headers//Manager.h"
+#include "CommandHandler.h"
+#include "CashierCommandHandler.h"
+#include "ManagerCommandHandler.h"
 
 class CommandDispatcher {
-public:
-	static void dispatch(const String& input, const User* user);
+private:
+	static void dispatch(const String& input, const Worker* user);
+
+	friend class System;
 };

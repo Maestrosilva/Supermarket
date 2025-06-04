@@ -2,7 +2,7 @@
 #include "..//..//utils//_Utils.h"
 #include "CommandHandler.h"
 
-class CashierCommandHandler{
+class ManagerCommandHandler{
 private:
 	static void handle(const Vector<String>& tokens);
 

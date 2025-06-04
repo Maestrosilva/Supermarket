@@ -7,41 +7,47 @@ void CashierCommandHandler::handle(const Vector<String> tokens) {
 			sell();
 		}
 	}
-	catch (std::exception) {
+	catch (std::exception&) {
 		throw std::invalid_argument("Something went wrong!");
 	}
 }
 
 void CashierCommandHandler::sell() {
-	std::cout << "Products: " << std::endl;
-	size_t counter = 1;
-	System::products.foreach([](const Product* p) {
-		std::cout << counter++ << ". ";
-		std::cout << p->toString() << std::endl;
-		});
-	String product;
-	double quantity;
-	Transaction* t(System::current->getId);
-	while (true) {
-		std::cout << "Enter Product Id to sell. Enter 'END' to end the transaction:" << std::endl;
-		std::cin >> product;
-		if (product = "END") {
-			break;
-		}
-		Product* p = products[String::toNum(product)];
-		std::cout << "Enter quantity:" << std::endl;
-		std::cin >> quantity;
-		try {
-			System::sell(p, quantity);
-			t->add(Pair(p, quantity));
-		}
-		catch (std::runtime_error e) {
-			std::cerr << e.what();
-			std::cout << "<------------------------>" << std::endl;
-			continue;
-		}
-		std::cout << "<------------------------>" << std::endl;
-	}
-	System::transactions.push(t);
-	System::save();
+    System::printProducts();
+    System::startTransaction();
+    String productInput;
+    double quantity;
+    while (true) {
+        std::cout << "Enter Product Id to sell. Enter 'END' to end the transaction:\n";
+        std::cin >> productInput;
+        if (productInput == "END") {
+            break;
+        }
+        Product* product = System::getProductById(String::toInt(productInput));
+        if (product == nullptr) {
+            std::cerr << "Invalid product ID!" << std::endl;
+            continue;
+        }
+        std::cout << "Enter quantity:\n";
+        if (!(std::cin >> quantity)) {
+            std::cerr << "Invalid quantity input!" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+        try {
+            System::sell(product, quantity);
+        }
+        catch (const std::runtime_error& e) {
+            std::cerr << e.what() << "\n<------------------------>\n";
+            continue;
+        }
+        std::cout << "<------------------------>\n";
+    }
+    try {
+        System::endTransaction();
+    }
+    catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
 }

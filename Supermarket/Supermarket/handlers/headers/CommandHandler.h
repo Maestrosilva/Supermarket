@@ -1,9 +1,10 @@
 #pragma once
-#include "..//..//utils//headers//String.h"
-#include "..//..//utils//headers//Vector.h"
-#include "..//..//core//headers//System.h"
+#include "..//..//utils//_Utils.h"
+#include "..//..//core//System.h"
 
 class CommandHandler {
-public:
+private:
 	static void handle(const Vector<String>& tokens);
+
+	friend class CommandDispatcher;
 };

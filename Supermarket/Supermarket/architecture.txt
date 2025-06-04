@@ -1,0 +1,23 @@
+/core
+  /models
+    /headers
+    /impls
+  /enums
+System.h
+Main.cpp
+
+/repositories
+  /headers
+  /impls
+
+/handlers
+  /headers
+  /impls
+
+/factories
+  /headers
+  /impls
+
+/data
+
+/utils

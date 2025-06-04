@@ -1,0 +1,11 @@
+#pragma once
+#include "headers//Casher.h"
+#include "headers//Category.h"
+#include "headers//Feedback.h"
+#include "headers//Manager.h"
+#include "headers//Product.h"
+#include "headers//ProductById.h"
+#include "headers//ProductByWeight.h"
+#include "headers//Transaction.h"
+#include "headers//Warning.h"
+#include "headers//Worker.h"

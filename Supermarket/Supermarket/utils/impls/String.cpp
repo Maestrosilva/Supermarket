@@ -305,7 +305,7 @@ String operator+(const String& lhs, const String& rhs) {
     return result;
 }
 
-String String::toString(long long num) {
+String String::integerToString(long long num) {
     if (num == 0) return String("0");
 
     String result;
@@ -326,26 +326,68 @@ String String::toString(long long num) {
     return result.reversed();
 }
 
-long long String::toNum(const String& str) {
+long long String::toInt(const String& str) {
     if (str.isEmpty()) return 0;
-
     long long result = 0;
     bool isNegative = false;
     size_t start = 0;
-
     if (str[0] == '-') {
         isNegative = true;
         start = 1;
     }
-
     for (size_t i = start; i < str.getSize(); ++i) {
         if (str[i] < '0' || str[i] > '9') {
             throw std::invalid_argument("Invalid number format!");
         }
         result = result * 10 + (str[i] - '0');
     }
-
     return isNegative ? -result : result;
+}
+
+String String::doubleToString(double value, unsigned char precision) {
+    char buffer[64];
+    char format[10];
+    std::snprintf(format, sizeof(format), "%%.%df", precision);
+    std::snprintf(buffer, sizeof(buffer), format, value);
+    return String(buffer);
+}
+
+double String::toDouble(const String& str) {
+    double result = 0.0;
+    double fraction = 0.0;
+    double divisor = 10.0;
+    bool negative = false;
+    bool pastDecimal = false;
+    size_t i = 0;
+    if (str[i] == '-') {
+        negative = true;
+        i++;
+    }
+    else if (str[i] == '+') {
+        i++;
+    }
+    for (; str[i] != '\0'; ++i) {
+        if (str[i] == '.') {
+            if (pastDecimal) break;
+            pastDecimal = true;
+        }
+        else if (str[i] >= '0' && str[i] <= '9') {
+            int digit = str[i] - '0';
+            if (!pastDecimal) {
+                result = result * 10.0 + digit;
+            }
+            else {
+                fraction += digit / divisor;
+                divisor *= 10.0;
+            }
+        }
+        else {
+            std::invalid_argument("Invalid double format!");
+        }
+    }
+    result += fraction;
+    if (negative) result = -result;
+    return result;
 }
 
 const char* String::operator const char* () const {

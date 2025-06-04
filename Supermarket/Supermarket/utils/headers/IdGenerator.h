@@ -1,19 +1,18 @@
 #pragma once
-#include "String.h"
 #include "..//..//enums//IdType"
+#include "String.h"
+#include "Serializable.h"
 #include <fstream>
-#include <sstream>
 
+class IdGenerator : public Serializable {
+public:
+    static int next(IdType type);
 
-
-class IdGenerator : Serializable{
-    static int getNextId(IdType type) {
-        return counters[(int)type]++;
-    }
+    void serialize(const std::string& filename) const override;
+    void deserialize(const std::string& filename) override;
 
 private:
     static int counters[(int)IdType::Count];
 };
 
-
-int IdGenerator::counters[(int)Category::Count] = { 0 };
+int IdGenerator::counters[(int)IdType::Count] = { 0 };

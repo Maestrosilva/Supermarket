@@ -1,2 +1,1 @@
-# Supermarket
-Supermarket software froject
+

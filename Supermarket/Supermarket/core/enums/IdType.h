@@ -4,5 +4,6 @@ enum class IdType {
     DISCOUNT,
     FEED,
     TRANSACTION,
+    CATEGORY,
     COUNT
 };

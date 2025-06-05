@@ -13,16 +13,258 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\repositories">
+      <UniqueIdentifier>{ec92c9be-6682-4540-b895-abdf590b8aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\factories">
+      <UniqueIdentifier>{0621b39c-ca2a-4a3d-8241-b618c088f2c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\handlers">
+      <UniqueIdentifier>{a2cabb36-384a-494a-909b-1fcafb41cb26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{f969ea7b-683f-4762-a8ea-ff4821e115d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{f4abb0dd-25df-423c-bda8-32b66432a9e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\models">
+      <UniqueIdentifier>{1bdb5b40-cdde-4045-83ca-62f4e5853697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\factories">
+      <UniqueIdentifier>{0837fc93-6eba-4bb9-8c56-f27298fd0679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\handlers">
+      <UniqueIdentifier>{41501183-f0db-4347-a9a7-5d9231655cbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\repositories">
+      <UniqueIdentifier>{15f64af5-9dba-40f8-ab09-00a7646e302a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{1bc84d9b-9364-4dad-ac10-a3f99cb65219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{01eda6f5-806a-4c9d-95a0-63ee6cc783ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core\modules">
+      <UniqueIdentifier>{854befc4-adc7-40ce-97f7-95496eb3f26e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core\enums">
+      <UniqueIdentifier>{7ec896ab-f365-49b9-90bd-81d6767a3562}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Supermarket.cpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="factories\_Factories.h">
+      <Filter>Header Files\factories</Filter>
+    </ClInclude>
+    <ClInclude Include="factories\headers\ProductFactory.h">
+      <Filter>Header Files\factories</Filter>
+    </ClInclude>
+    <ClInclude Include="factories\headers\WorkerFactory.h">
+      <Filter>Header Files\factories</Filter>
+    </ClInclude>
+    <ClInclude Include="handlers\_Handlers.h">
+      <Filter>Header Files\handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="handlers\headers\CommandHandler.h">
+      <Filter>Header Files\handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="handlers\headers\ManagerCommandHandler.h">
+      <Filter>Header Files\handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="handlers\headers\CashierCommandHandler.h">
+      <Filter>Header Files\handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="handlers\headers\CommandDispatcher.h">
+      <Filter>Header Files\handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="repositories\_Repositories.h">
+      <Filter>Header Files\repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="repositories\headers\FeedbackRepository.h">
+      <Filter>Header Files\repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="repositories\headers\ProductRepository.h">
+      <Filter>Header Files\repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="repositories\headers\TransactionRepository.h">
+      <Filter>Header Files\repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="repositories\headers\WorkerRepository.h">
+      <Filter>Header Files\repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="repositories\headers\BaseRepository.h">
+      <Filter>Header Files\repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\_Utils.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\headers\Hasher.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\headers\IdGenerator.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\headers\Serializable.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\headers\String.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\headers\Validator.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\headers\Vector.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\headers\Date.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="core\enums\DegreeOfCriticality.h">
+      <Filter>Header Files\core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="core\enums\IdType.h">
+      <Filter>Header Files\core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="core\enums\ProductType.h">
+      <Filter>Header Files\core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="core\enums\Role.h">
+      <Filter>Header Files\core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="core\enums\_Enums.h">
+      <Filter>Header Files\core\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\Cashier.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\Category.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\Feedback.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\Manager.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\Product.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\ProductByUnit.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\ProductByWeight.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\Transaction.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\Warning.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\headers\Worker.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\models\_Models.h">
+      <Filter>Header Files\core\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="core\System.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="repositories\headers\CategoryRepository.h">
+      <Filter>Header Files\repositories</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="repositories\impls\ProductRepository.cpp">
+      <Filter>Source Files\repositories</Filter>
     </ClCompile>
-    <ClCompile Include="Worker.cpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="repositories\impls\TransactionRepository.cpp">
+      <Filter>Source Files\repositories</Filter>
     </ClCompile>
-    <ClCompile Include="System.cpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="repositories\impls\WorkerRepository.cpp">
+      <Filter>Source Files\repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="repositories\impls\BaseRepository.cpp">
+      <Filter>Source Files\repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="repositories\impls\FeedbackRepository.cpp">
+      <Filter>Source Files\repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\impls\IdGenerator.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\impls\String.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\impls\Validator.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\impls\Vector.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\impls\Date.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\impls\Hasher.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\impls\CommandDispatcher.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\impls\CommandHandler.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\impls\CashierCommandHandler.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="factories\impls\WorkerFactory.cpp">
+      <Filter>Source Files\factories</Filter>
+    </ClCompile>
+    <ClCompile Include="factories\impls\ProductFactory.cpp">
+      <Filter>Source Files\factories</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\Feedback.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\Manager.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\Product.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\ProductByUnit.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\ProductByWeight.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\Transaction.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\Worker.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\Cashier.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\Category.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="core\System.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\Main.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\impls\Serializable.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="core\models\impls\Warning.cpp">
+      <Filter>Source Files\core\models</Filter>
+    </ClCompile>
+    <ClCompile Include="repositories\impls\CategoryRepository.cpp">
+      <Filter>Source Files\repositories</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

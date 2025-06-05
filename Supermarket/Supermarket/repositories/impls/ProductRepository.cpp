@@ -1,6 +1,6 @@
 #include "..//headers//ProductRepository.h"
 
-Vector<Product*> ProductRepository::products;
+const String ProductRepository::PRODUCTS_DATA_FILE_NAME = "..//..//data//products.dat";
 
 const Vector<Product*>& ProductRepository::getProducts() { return products; }
 
@@ -14,7 +14,7 @@ Product* ProductRepository::getById(const String& id) {
 }
 
 void ProductRepository::add(Product* product) { products.push(product); }
-void ProductRepository::remove(const Product* product) { products.remove(product); }
+void ProductRepository::remove(Product* product) { products.remove(product); }
 
 void ProductRepository::load() {
     free();
@@ -37,13 +37,11 @@ void ProductRepository::load() {
 
 void ProductRepository::save() const {
     std::ofstream file(ProductRepository::PRODUCTS_DATA_FILE_NAME, std::ios::binary | std::ios::trunc);
-    if (!file) {
-        throw std::runtime_error("Failed to open products file!");
-    }
+    if (!file) return;
     size_t length = products.getLength();
     file.write(reinterpret_cast<const char*>(&length), sizeof(length));
     for (size_t i = 0; i < length; ++i) {
-        char typeByte = static_cast<char>(static_cast<ProductType::ProductTypeEnum>(products[i]->getType()));
+        char typeByte = static_cast<char>(static_cast<ProductType::ProductTypeEnum>(products[i]->getType().get()));
         file.write(&typeByte, sizeof(typeByte));
         products[i]->serialize(file);
     }

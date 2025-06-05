@@ -1,12 +1,15 @@
 #include "..//headers//Category.h"
 
 Category::Category(const String& name, const String& description)
-    : name(name), description(description) {}
-
-Category::Category(const Category& other)
-    : name(other.name), description(other.description) {}
+    : name(name), description(description), id(IdGenerator::next(IdType::CATEGORY)) {
+    if (!description) {
+        this->description = String("This is default description for") + name;
+    }
+}
 
 const String& Category::getName() const { return name; }
+
+const String& Category::getId() const { return id; }
 
 const String& Category::getDescription() const { return description; }
 

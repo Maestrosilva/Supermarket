@@ -1,10 +1,9 @@
 #include "..//headers//ProductFactory.h"
 
-
-Product* ProductFactory::create(const ProductType::Type type, const String& name, const Category& category, double price, double quantityOrWeight) {
-    switch (type) {
-    case ProductType::BY_UNIT: return new ProductsByUnit(name, category, price, static_cast<size_t>(quantityOrWeight));
-    case ProductType::BY_WEIGHT: return new ProductsByWeight(name, category, price, quantityOrWeight);
+Product* ProductFactory::create(const ProductType& type, const String& name = "", const String& categoryId, double price = 0, double quantityOrWeight = 0) {
+    switch (type.get()) {
+    case ProductType::BY_UNIT: return new ProductsByUnit(name, categoryId, price, static_cast<size_t>(quantityOrWeight));
+    case ProductType::BY_WEIGHT: return new ProductsByWeight(name, categoryId, price, quantityOrWeight);
     default:
         return nullptr;
     }

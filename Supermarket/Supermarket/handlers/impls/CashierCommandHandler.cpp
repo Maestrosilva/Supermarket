@@ -1,9 +1,10 @@
 #include "..//headers//CashierCommandHandler.h"
 
-void CashierCommandHandler::handle(const Vector<String> tokens) {
+void CashierCommandHandler::handle(const Vector<String>& tokens) {
 	try {
 		CommandHandler::handle(tokens);
-		if (command == "sell") {
+        String command = tokens[0];
+		if (command == String("sell")) {
 			sell();
 		}
 	}
@@ -13,37 +14,56 @@ void CashierCommandHandler::handle(const Vector<String> tokens) {
 }
 
 void CashierCommandHandler::sell() {
-    System::printProducts();
-    System::startTransaction();
+    System::displayAllProducts();
+    promptProductSale();
+    endTransactionSafely();
+}
+
+void CashierCommandHandler::promptProductSale() {
     String productInput;
     double quantity;
     while (true) {
         std::cout << "Enter Product Id to sell. Enter 'END' to end the transaction:\n";
+        std::cout << ">";
         std::cin >> productInput;
-        if (productInput == "END") {
-            break;
-        }
+        if (productInput == String("END")) break;
         Product* product = System::getProductById(String::toInt(productInput));
-        if (product == nullptr) {
+        if (!product) {
             std::cerr << "Invalid product ID!" << std::endl;
             continue;
         }
-        std::cout << "Enter quantity:\n";
-        if (!(std::cin >> quantity)) {
-            std::cerr << "Invalid quantity input!" << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            continue;
-        }
-        try {
-            System::sell(product, quantity);
-        }
-        catch (const std::runtime_error& e) {
-            std::cerr << e.what() << "\n<------------------------>\n";
-            continue;
-        }
+        quantity = promptQuantity(product);
+        if (quantity < 0) continue;
+        sellProduct(product, quantity);
         std::cout << "<------------------------>\n";
     }
+}
+
+double CashierCommandHandler::promptQuantity(Product* product) {
+    double quantity;
+    std::cout << "Enter quantity:";
+    if (product->getType() == ProductType::BY_UNIT)
+        std::cout << " (units)";
+    std::cout << "\n";
+    if (!(std::cin >> quantity)) {
+        std::cerr << "Invalid quantity input!" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return -1;
+    }
+    return quantity;
+}
+
+void CashierCommandHandler::sellProduct(Product* product, double quantity) {
+    try {
+        System::sell(product, quantity);
+    }
+    catch (const std::runtime_error& e) {
+        std::cerr << e.what() << "\n<------------------------>\n";
+    }
+}
+
+void CashierCommandHandler::endTransactionSafely() {
     try {
         System::endTransaction();
     }

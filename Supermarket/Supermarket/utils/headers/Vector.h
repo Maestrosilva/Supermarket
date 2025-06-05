@@ -42,7 +42,7 @@ public:
     void add(const T& element, size_t index);
     void add(const Vector& vect, size_t index);
 
-    Vector& remove(const T& element);
+    bool remove(const T& element);
     void removeAt(size_t index);
 
     void setAt(size_t index, const T& toSet);

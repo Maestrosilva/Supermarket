@@ -6,6 +6,7 @@
 #include "..//..//core//models//headers//Manager.h"
 
 class WorkerFactory {
+public:
 	static Worker* create(const Role& role, const String& firstName = "", const String& lastName = "",
 		const String& phoneNumber = "", unsigned char age = 0, const String& password = "");
 };

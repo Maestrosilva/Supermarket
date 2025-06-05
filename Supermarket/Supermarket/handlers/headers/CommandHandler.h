@@ -3,8 +3,6 @@
 #include "..//..//core//System.h"
 
 class CommandHandler {
-private:
+public:
 	static void handle(const Vector<String>& tokens);
-
-	friend class CommandDispatcher;
 };

@@ -7,15 +7,15 @@
 class TransactionRepository : public BaseRepository {
 private:
 	Vector<Transaction*> transactions;
-	static constexpr String TRANSACTIONS_DATA_FILE_NAME = "..//..//data//transactions.dat";
+	static const String TRANSACTIONS_DATA_FILE_NAME;
 
 	TransactionRepository() = default;
 
-	const Vector<Transaction*>& getTransaction();
+	const Vector<Transaction*>& getTransactions();
 	const Transaction* getById(const String& id);
 
 	void add(Transaction* transaction);
-	void remove(const Transaction* transaction);
+	void remove(Transaction* const transaction);
 
 	void load() override;
 	void save() const override;

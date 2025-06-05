@@ -1,6 +1,7 @@
 #pragma once
 #include "..//..//..//utils//_Utils.h"
-#include "System.h"
+#include "../..//enums//_Enums.h"
+#include "..//..//System.h"
 
 class Worker : public Serializable {
 protected:
@@ -27,9 +28,9 @@ public:
 	void deserialize(std::istream& is) override;
 
 	virtual const Role& getRole() const = 0;
-	const String& toString() const;
+	String toString() const;
 
-	virtual ~Worker() = default;
+	virtual ~Worker();
 
-	friend class System;
+	friend class WorkerRepository;
 };

@@ -1,6 +1,8 @@
 #pragma once
-#include "..//..//..//utils//_Utils.h.h"
-#include "Cashier.h"
+#include "..//..//..//utils//_Utils.h"
+#include "../..//enums//IdType.h"
+#include "..//..//System.h"
+#include "Product.h"
 #include <fstream>
 
 struct Pair {
@@ -10,24 +12,34 @@ struct Pair {
 
 class Transaction : public Serializable {
 private:
-    const String id;
-    const String cashierId;
+    String id;
+    String cashierId;
     String date;
     Vector<Pair> pairs;
 
     bool ended = false;
+    double total = 0;
+    String receipt = "";
 
-    static constexpr const String FILE_NAME = "..//..//receipts//receipt_";
 
 public:
+    static const String FILE_NAME;
+
+    Transaction() = default;
     Transaction(const String& cashierId);
 
     void add(const Pair& pair);
 
+    const String& getId() const;
+    const String& getCashierId() const;
+    double totalPrice() const;
+
     String toString() const;
+
+    void endTransaction();
 
     void serialize(std::ostream& os) const override;
     void deserialize(std::istream& is) override;
 
-    ~Transaction();
+    ~Transaction() = default;
 };

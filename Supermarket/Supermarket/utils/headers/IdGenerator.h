@@ -1,5 +1,5 @@
 #pragma once
-#include "..//..//enums//IdType"
+#include "..//..//core//enums//IdType.h"
 #include "String.h"
 #include "Serializable.h"
 #include <fstream>
@@ -7,12 +7,11 @@
 class IdGenerator : public Serializable {
 public:
     static int next(IdType type);
-
-    void serialize(const std::string& filename) const override;
-    void deserialize(const std::string& filename) override;
+    void serialize(std::ostream& os) const override;
+    void deserialize(std::istream& is) override;
 
 private:
-    static int counters[(int)IdType::Count];
+    static int counters[(int)IdType::COUNT];
 };
 
-int IdGenerator::counters[(int)IdType::Count] = { 0 };
+int IdGenerator::counters[(int)IdType::COUNT] = { 0 };

@@ -12,18 +12,18 @@ const String& Worker::getLastName() const { return this->lastName; }
 
 const String& Worker::getPhoneNumber() const { return this->phoneNumber; }
 
-const String& toString() const {
+String Worker::toString() const {
     String toReturn;
     toReturn.append("Id: ").append(id).append(" ");
     toReturn.append(Role::toString(getRole())).append(" ");
     toReturn.append(firstName).append(" ");
     toReturn.append(lastName).append(" ");
     toReturn.append(phoneNumber).append(" ");
-    toReturn.append(String::intToString(age)).append(" ");
+    toReturn.append(String::intToString(age)).append("years old");
     return toReturn;
 }
 
-unsigned char getAge() const { return this->age; }
+unsigned char Worker::getAge() const { return this->age; }
 
 void Worker::serialize(std::ostream& os) const {
     id.serialize(os);
@@ -42,3 +42,5 @@ void Worker::deserialize(std::istream& is) {
     is.read(reinterpret_cast<char*>(&age), sizeof(age));
     password.deserialize(is);
 }
+
+Worker::~Worker() = default;

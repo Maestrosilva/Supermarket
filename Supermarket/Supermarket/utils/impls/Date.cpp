@@ -5,9 +5,8 @@ const String& Date::getCurrentDate() {
     std::tm* localTime = std::localtime(&now);
 
     String time("Current time: "
-        + localTime->hour << ":"
-        + localTime->min << ":"
-        + localTime->sec << std::endl);
-
+        + String::intToString(localTime->tm_hour) + ":"
+        + String::intToString(localTime->tm_min) + ":"
+        + String::intToString(localTime->tm_sec));
     return time;
 }

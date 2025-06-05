@@ -5,10 +5,10 @@
 #include "BaseRepository.h"
 #include <fstream>
 
-class ProductRepository public BaseRepository {
+class ProductRepository : public BaseRepository {
 private:
 	Vector<Product*> products;
-	static constexpr String PRODUCTS_DATA_FILE_NAME = "..//..//data//products.dat";
+	static const String PRODUCTS_DATA_FILE_NAME = "..//..//data//products.dat";
 
 	ProductRepository() = default;
 
@@ -16,7 +16,7 @@ private:
 	Product* getById(const String& id);
 
 	void add(Product* product);
-	void remove(const Product* product);
+	void remove(Product* const product);
 
 	void load() override;
 	void save() const override;

@@ -3,10 +3,9 @@
 #include "CommandHandler.h"
 
 class ManagerCommandHandler{
-private:
+public:
 	static void handle(const Vector<String>& tokens);
 
-	static void sell();
+private:
 
-	friend class CommandDispathcer;
 };

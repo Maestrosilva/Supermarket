@@ -15,7 +15,7 @@ void System::reload() {
     transactionRepository.reload();
 }
 
-void System::save() const {
+void System::save() {
     workerRepository.save();
     productRepository.save();
     feedbackRepository.save();
@@ -42,7 +42,7 @@ void System::free() {
 
 void System::removeCurrent() {
     if (current) {
-        workerRepository.remove(current->getId());
+        workerRepository.remove(current);
         delete current;
         current = nullptr;
     }
@@ -53,10 +53,8 @@ String System::getCustomMessage() {
     std::ifstream file("..//..//data//no-data.txt");
     if (!file) return "";
     String line;
-    while (std::getline(file, line)) {
-        if (line.getSize() > 0) {
-            messages.push(line);
-        }
+    while (file >> line) {
+        messages.push(line);
     }
     file.close();
     static bool seeded = false;
@@ -72,11 +70,15 @@ void System::refill(const String& fileName) {
     std::ifstream file(fileName);
     if (!file) throw std::runtime_error("Failed to open file!");
     String line;
-    while (std::getline(file, line)) {
+    while (file >> line) {
         Vector<String> args = line.split(':');
         if (args.getLength() < 2) continue;
-        if (args[0] == "new") {
-            Product* p = ProductFactory::create(args.subarray(1));
+        if (args[0] == String("new")) {
+            ProductType pt = ProductType::get(args[1]);
+            String name = args[2];
+            String categoryName = args[3];
+            ProductType pt = ProductType::get(args[1]);
+            Product* p = ProductFactory::create(pt);
             productRepository.add(p);
         }
         else {
@@ -99,15 +101,11 @@ void System::refill(const String& fileName) {
     file.close();
 }
 
-void System::startTransaction() {
-    delete currentTransaction;
-    currentTransaction = new Transaction(current->getId());
-}
-
 void System::endTransaction() {
     if (!currentTransaction) {
         throw std::runtime_error("No active transaction to end!");
     }
+    currentTransaction->endTransaction();
     transactionRepository.add(currentTransaction);
     transactionRepository.save();
     String fileName = Transaction::FILE_NAME + currentTransaction->getId() + ".txt";
@@ -120,7 +118,31 @@ void System::endTransaction() {
     currentTransaction = nullptr;
 }
 
+void System::displayAllWorkers() {
+    workerRepository.getWorkers().foreach([](const Worker* w) {std::cout << w->toString() << std::endl; });
+}
+
+void System::displayAllProducts(const String& categoryId) {
+    if (categoryId == String("")) {
+        productRepository.getProducts().foreach([](const Product* p) {std::cout << p->toString() << std::endl; });
+    }
+    else {
+        productRepository.getProducts().filtered([&](const Product* p) {return p->getCategoryId() == categoryId; }).foreach([](const Product* p) {std::cout << p->toString() << std::endl; });
+    }
+}
+
+void System::displayAllFeedbacks() {
+    feedbackRepository.getFeedbacks().foreach([](const Feedback* f) {std::cout << f->toString() << std::endl; });
+}
+
+void System::displayAllTransactions() {
+    transactionRepository.getTransactions().foreach([](const Transaction* t) {std::cout << t->getCashierId() << " " << t->totalPrice() << "lv." << std::endl; });
+}
+
 void System::sell(Product* product, double quantity) {
+    if (!currentTransaction) {
+        currentTransaction = new Transaction(current->getId());
+    }
     if (product->getQuantity() < quantity) {
         throw std::runtime_error("Not enough of this product to sell!");
     }
@@ -143,7 +165,7 @@ void System::registerUser(const Vector<String> tokens) {
     if (tokens.getLength() < 6) {
         throw std::runtime_error("Invalid format!");
     }
-    Role role = Role::fromString(tokens[0]);
+    Role role = Role::get(tokens[0]);
     Worker* w = WorkerFactory::create(role, tokens[1], tokens[2], tokens[3], (unsigned char)String::toInt(tokens[4]), tokens[5]);
     workerRepository.add(w);
     workerRepository.save();
@@ -161,14 +183,12 @@ void System::logout() {
 }
 
 void System::run() {
-    load();
     String line;
     while (true) {
+        reload();
         std::cout << "> ";
         std::cin >> line;
-        if (line == "exit") break;
+        if (line == String("exit")) break;
         CommandDispatcher::dispatch(line, current);
     }
-    save();
-    free();
 }

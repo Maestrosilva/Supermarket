@@ -18,10 +18,84 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\enums\DegreeOfCriticality.h" />
+    <ClInclude Include="core\enums\IdType.h" />
+    <ClInclude Include="core\enums\ProductType.h" />
+    <ClInclude Include="core\enums\Role.h" />
+    <ClInclude Include="core\enums\_Enums.h" />
+    <ClInclude Include="core\models\headers\Cashier.h" />
+    <ClInclude Include="core\models\headers\Category.h" />
+    <ClInclude Include="core\models\headers\Feedback.h" />
+    <ClInclude Include="core\models\headers\Manager.h" />
+    <ClInclude Include="core\models\headers\Product.h" />
+    <ClInclude Include="core\models\headers\ProductByUnit.h" />
+    <ClInclude Include="core\models\headers\ProductByWeight.h" />
+    <ClInclude Include="core\models\headers\Transaction.h" />
+    <ClInclude Include="core\models\headers\Warning.h" />
+    <ClInclude Include="core\models\headers\Worker.h" />
+    <ClInclude Include="core\models\_Models.h" />
+    <ClInclude Include="core\System.h" />
+    <ClInclude Include="factories\headers\ProductFactory.h" />
+    <ClInclude Include="factories\headers\WorkerFactory.h" />
+    <ClInclude Include="factories\_Factories.h" />
+    <ClInclude Include="handlers\headers\CashierCommandHandler.h" />
+    <ClInclude Include="handlers\headers\CommandDispatcher.h" />
+    <ClInclude Include="handlers\headers\CommandHandler.h" />
+    <ClInclude Include="handlers\headers\ManagerCommandHandler.h" />
+    <ClInclude Include="handlers\_Handlers.h" />
+    <ClInclude Include="repositories\headers\BaseRepository.h" />
+    <ClInclude Include="repositories\headers\CategoryRepository.h" />
+    <ClInclude Include="repositories\headers\FeedbackRepository.h" />
+    <ClInclude Include="repositories\headers\ProductRepository.h" />
+    <ClInclude Include="repositories\headers\TransactionRepository.h" />
+    <ClInclude Include="repositories\headers\WorkerRepository.h" />
+    <ClInclude Include="repositories\_Repositories.h" />
+    <ClInclude Include="utils\headers\Date.h" />
+    <ClInclude Include="utils\headers\Hasher.h" />
+    <ClInclude Include="utils\headers\IdGenerator.h" />
+    <ClInclude Include="utils\headers\Serializable.h" />
+    <ClInclude Include="utils\headers\String.h" />
+    <ClInclude Include="utils\headers\Validator.h" />
+    <ClInclude Include="utils\headers\Vector.h" />
+    <ClInclude Include="utils\_Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="core\Main.cpp" />
+    <ClCompile Include="core\models\impls\Cashier.cpp" />
+    <ClCompile Include="core\models\impls\Category.cpp" />
+    <ClCompile Include="core\models\impls\Feedback.cpp" />
+    <ClCompile Include="core\models\impls\Manager.cpp" />
+    <ClCompile Include="core\models\impls\Product.cpp" />
+    <ClCompile Include="core\models\impls\ProductByUnit.cpp" />
+    <ClCompile Include="core\models\impls\ProductByWeight.cpp" />
+    <ClCompile Include="core\models\impls\Transaction.cpp" />
+    <ClCompile Include="core\models\impls\Warning.cpp" />
+    <ClCompile Include="core\models\impls\Worker.cpp" />
+    <ClCompile Include="core\System.cpp" />
+    <ClCompile Include="factories\impls\ProductFactory.cpp" />
+    <ClCompile Include="factories\impls\WorkerFactory.cpp" />
+    <ClCompile Include="handlers\impls\CashierCommandHandler.cpp" />
+    <ClCompile Include="handlers\impls\CommandDispatcher.cpp" />
+    <ClCompile Include="handlers\impls\CommandHandler.cpp" />
+    <ClCompile Include="repositories\impls\BaseRepository.cpp" />
+    <ClCompile Include="repositories\impls\CategoryRepository.cpp" />
+    <ClCompile Include="repositories\impls\FeedbackRepository.cpp" />
+    <ClCompile Include="repositories\impls\ProductRepository.cpp" />
+    <ClCompile Include="repositories\impls\TransactionRepository.cpp" />
+    <ClCompile Include="repositories\impls\WorkerRepository.cpp" />
+    <ClCompile Include="utils\impls\Date.cpp" />
+    <ClCompile Include="utils\impls\Hasher.cpp" />
+    <ClCompile Include="utils\impls\IdGenerator.cpp" />
+    <ClCompile Include="utils\impls\Serializable.cpp" />
+    <ClCompile Include="utils\impls\String.cpp" />
+    <ClCompile Include="utils\impls\Validator.cpp" />
+    <ClCompile Include="utils\impls\Vector.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{8b277b0a-c35c-4a7c-b25f-952525188343}</ProjectGuid>
+    <ProjectGuid>{d77bb88c-c78c-4e69-82ae-d2ee2d3a86da}</ProjectGuid>
     <RootNamespace>Supermarket</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -126,11 +200,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Supermarket.cpp" />
-    <ClCompile Include="System.cpp" />
-    <ClCompile Include="Worker.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,18 +1,28 @@
-#include "..//headers//Cashier.h"
+#include "..//headers//Feedback.h"
 
-Manager::Manager(const String& firstName, const String& lastName, const String& phoneNumber, unsigned char age, const String& password)
-	: Worker(firstName, lastName, phoneNumber, age, password) {}
+Feedback::Feedback(const String& workerId, const String& description) : workerId(workerId), description(description),
+id(IdGenerator::next(IdType::FEED)), date(Date::getCurrentDate()) {}
 
-const Role& Manager::getRole() const { return Role::MANAGER; }
+const String& Feedback::getWorkerId() const { return workerId; }
 
-bool Manager::authenticate(const String& specialCode) { return this->specialCode == specialCode; }
+const String& Feedback::getDescription() const { return description; }
 
-void Manager::serialize(std::ostream& os) const {
-    Role::RoleEnum role = Role::MANAGER;
-    os.write(reinterpret_cast<const char*>(&role), sizeof(role));
-    Worker::serialize(os);
+const String& Feedback::getDate() const { return date; }
+
+const String& Feedback::getId() const { return id; }
+
+String Feedback::toString() const {
+	return workerId + " | " + date + " | " + description;
 }
 
-void Manager::deserialize(std::istream& is) {
-    Worker::deserialize(is);
+void Feedback::serialize(std::ostream& os) const {
+	workerId.serialize(os);
+	description.serialize(os);
+	date.serialize(os);
+}
+
+void Feedback::deserialize(std::istream& is) {
+	workerId.deserialize(is);
+	description.deserialize(is);
+	date.deserialize(is);
 }

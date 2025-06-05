@@ -1,8 +1,8 @@
 #include "..//headers//TransactionRepository.h"
 
-Vector<Transaction*> TransactionRepository::transactions;
+const String TransactionRepository::TRANSACTIONS_DATA_FILE_NAME = "..//..//data//transactions.dat";
 
-const Vector<Transaction*>& TransactionRepository::getTransaction() { return transactions; }
+const Vector<Transaction*>& TransactionRepository::getTransactions() { return transactions; }
 
 const Transaction* TransactionRepository::getById(const String& id) {
     for (size_t i = 0; i < transactions.getLength(); ++i) {
@@ -14,7 +14,7 @@ const Transaction* TransactionRepository::getById(const String& id) {
 }
 
 void TransactionRepository::add(Transaction* transaction) { transactions.push(transaction); }
-void TransactionRepository::remove(const Transaction* transaction) { transactions.remove(transaction); }
+void TransactionRepository::remove(Transaction* const transaction) { transactions.remove(transaction); }
 
 void TransactionRepository::load() {
     free();
@@ -32,9 +32,7 @@ void TransactionRepository::load() {
 
 void TransactionRepository::save() const {
     std::ofstream file(TRANSACTIONS_DATA_FILE_NAME, std::ios::binary | std::ios::trunc);
-    if (!file) {
-        throw std::runtime_error("Failed to open transactions file!");
-    }
+    if (!file) return;
     size_t length = transactions.getLength();
     file.write(reinterpret_cast<const char*>(&length), sizeof(length));
     for (size_t i = 0; i < length; ++i) {

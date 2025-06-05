@@ -1,27 +1,27 @@
 #include "..//headers//CommandHandler.h"
 
-void CommandHandler::handle(const Vector<String> tokens) {
+void CommandHandler::handle(const Vector<String>& tokens) {
 	try {
 		String command = tokens[0];
-		if (command == "list-user-data") {
+		if (command == String("list-user-data")) {
 			std::cout << System::current->toString();
 		}
-		else if (command == "list-workers") {
+		else if (command == String("list-workers")) {
 			System::displayAllWorkers();
 		}
-		else if (command == "list-products") {
+		else if (command == String("list-products")) {
 			System::displayAllProducts();
 		}
-		else if (command == "list-feed") {
+		else if (command == String("list-feed")) {
 			System::displayAllFeedbacks();
 		}
-		else if (command == "list-transactions") {
+		else if (command == String("list-transactions")) {
 			System::displayAllTransactions();
 		}
-		else if (command == "leave") {
+		else if (command == String("leave")) {
 			System::leave();
 		}
-		else if (command == "logout") {
+		else if (command == String("logout")) {
 			System::logout();
 		}
 	}

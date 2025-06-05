@@ -4,3 +4,4 @@
 #include "headers//ProductRepository.h"
 #include "headers//TransactionRepository.h"
 #include "headers//FeedbackRepository.h"
+#include "headers//CategoryRepository.h"

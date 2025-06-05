@@ -3,15 +3,17 @@
 
 class Feedback : public Serializable{
 private:
-	const String workerId;
-	const String description;
-	const String date;
+	String id;
+	String workerId;
+	String description;
+	String date;
 
 public:
 	Feedback() = default;
-	Feedback(const String& worker, const String& description);
+	Feedback(const String& workerId, const String& description);
 
-	const String getWorkerId() const;
+	const String& getId() const;
+	const String& getWorkerId() const;
 	const String& getDescription() const;
 	const String& getDate() const;
 
@@ -19,4 +21,6 @@ public:
 
 	void serialize(std::ostream& os) const override;
 	void deserialize(std::istream& is) override;
+
+	~Feedback() = default;
 };

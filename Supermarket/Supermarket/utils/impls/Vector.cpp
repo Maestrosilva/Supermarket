@@ -1,5 +1,6 @@
 #pragma once
 #include "..//headers//Vector.h"
+#include "..//headers//String.h"
 
 template <typename T>
 void Vector<T>::free() {

@@ -1,67 +1,49 @@
 #include "..//headers//Transaction.h"
-#include "..//headers//ProductFactory.h"
-#include "..//utils//headers//Date.h"
-#include "..//utils//headers//IdGenerator.h"
+
+const String Transaction::FILE_NAME = "..//..//receipts//receipt_";
 
 Transaction::Transaction(const String& cashierId)
-    : id(String::intToString(IdGenerator::next(IdType::TRANSACTION))), cashierId(cashierId), date(Date::getCurrentDate()) {}
-
-void Transaction::add(const Pair& pair) { pairs.push(pair); }
-
-String Transaction::toString() const {
-    String toReturn;
-    toReturn.append("RECEIPT\n");
-    toReturn.append("TRANSACTION_ID: ").append(id).append("\n");
-    toReturn.append("CASHIER_ID: ").append(cashierId).append("\n");
-    toReturn.append(date).append("\n");
-    toReturn.append("<----------------------------->\n");
-    double totalPrice = 0;
-    for (size_t i = 0; i < pairs.getLength(); i++) {
-        toReturn.append(pairs[i].product->getName()).append("\n");
-        double currentPrice = pairs[i].quantity * pairs[i].product->getPrice();
-        totalPrice += currentPrice;
-        toReturn.append(String::doubleToString(pairs[i].quantity, 2)).append("*")
-            .append(String::doubleToString(pairs[i].product->getPrice(), 2))
-            .append(" - ")
-            .append(String::doubleToString(currentPrice, 2))
-            .append("\n###\n");
-    }
-    toReturn.append("TOTAL_PRICE: ").append(String::doubleToString(totalPrice, 2)).append("\n");
-    return toReturn;
+    : id(String::intToString(IdGenerator::next(IdType::TRANSACTION))),
+    cashierId(cashierId), date(Date::getCurrentDate()) {
+    receipt.append("RECEIPT\n");
+    receipt.append("TRANSACTION_ID: ").append(id).append("\n");
+    receipt.append("CASHIER_ID: ").append(cashierId).append("\n");
+    receipt.append(date).append("\n");
+    receipt.append("<----------------------------->\n");
 }
 
-void Pair::serialize(std::ostream& os) const {
-    char typeByte = static_cast<char>(product->getType().getType());
-    os.write(&typeByte, sizeof(typeByte));
-    product->getName().serialize(os);
-    product->getCategory().serialize(os);
-    double price = product->getPrice();
-    os.write(reinterpret_cast<const char*>(&price), sizeof(price));
-    double quantityOrWeight = 0.0;
-    if (typeByte == static_cast<char>(ProductType::BY_UNIT)) {
-        quantityOrWeight = static_cast<double>(static_cast<ProductsByUnit*>(product)->getQuantity());
+void Transaction::add(const Pair& pair) { 
+    pairs.push(pair);
+    Product* product = System::getProductById(pair.productId);
+    double current = product->getPrice() * pair.quantity;;
+    receipt.append(product->getName()).append("\n");
+    receipt.append(product->getPrice()).append("*");
+    switch (product->getType().get()) {
+    case ProductType::BY_UNIT: receipt.append(String::intToString(pair.quantity));
+    case ProductType::BY_WEIGHT: receipt.append(String::doubleToString(pair.quantity, 3));
+    default: throw std::runtime_error("Invalid type!");
     }
-    else if (typeByte == static_cast<char>(ProductType::BY_WEIGHT)) {
-        quantityOrWeight = static_cast<ProductsByWeight*>(product)->getQuantity();
-    }
-    os.write(reinterpret_cast<const char*>(&quantityOrWeight), sizeof(quantityOrWeight));
-    os.write(reinterpret_cast<const char*>(&quantity), sizeof(quantity));
+    receipt.append(" - ").append(String::doubleToString(current, 2));
+    receipt.append("###\n");
+    total += current;
 }
 
-void Pair::deserialize(std::istream& is) {
-    char typeByte;
-    is.read(&typeByte, sizeof(typeByte));
-    ProductType::Type type = static_cast<ProductType::Type>(typeByte);
-    String name;
-    name.deserialize(is);
-    Category category;
-    category.deserialize(is);
-    double price;
-    is.read(reinterpret_cast<char*>(&price), sizeof(price));
-    double quantityOrWeight;
-    is.read(reinterpret_cast<char*>(&quantityOrWeight), sizeof(quantityOrWeight));
-    product = ProductFactory::create(type, name, category, price, quantityOrWeight);
-    is.read(reinterpret_cast<char*>(&quantity), sizeof(quantity));
+const String& Transaction::getCashierId() const { return cashierId; }
+const String& Transaction::getId() const { return id; }
+
+double Transaction::totalPrice() const { return total; }
+
+String Transaction::toString() const { return receipt; }
+
+void Transaction::endTransaction() {
+    ended = true;
+    receipt.append("TOTAL: ").append(String::doubleToString(totalPrice(), 2)).append("\n");
+    std::ofstream receiptFile(Transaction::FILE_NAME + id + ".txt");
+    if (!receiptFile) {
+        throw std::runtime_error("Failed to open receipt file for writing.");
+    }
+    receiptFile << receipt;
+    receiptFile.close();
 }
 
 void Transaction::serialize(std::ostream& os) const {
@@ -71,10 +53,14 @@ void Transaction::serialize(std::ostream& os) const {
     size_t count = pairs.getLength();
     os.write(reinterpret_cast<const char*>(&count), sizeof(count));
     for (size_t i = 0; i < count; ++i) {
-        pairs[i].serialize(os);
+        pairs[i].productId.serialize(os);
+        os.write(reinterpret_cast<const char*>(&pairs[i].quantity), sizeof(pairs[i].quantity));
     }
     os.write(reinterpret_cast<const char*>(&ended), sizeof(ended));
+    os.write(reinterpret_cast<const char*>(&total), sizeof(total));
+    receipt.serialize(os);
 }
+
 void Transaction::deserialize(std::istream& is) {
     id.deserialize(is);
     cashierId.deserialize(is);
@@ -84,14 +70,11 @@ void Transaction::deserialize(std::istream& is) {
     pairs.clear();
     for (size_t i = 0; i < count; ++i) {
         Pair p;
-        p.deserialize(is);
+        p.productId.deserialize(is);
+        is.read(reinterpret_cast<char*>(&p.quantity), sizeof(p.quantity));
         pairs.push(p);
     }
     is.read(reinterpret_cast<char*>(&ended), sizeof(ended));
-}
-
-Transaction::~Transaction() {
-    for (size_t i = 0; i < pairs.getLength(); i++) {
-        delete pairs[i].product;
-    }
+    is.read(reinterpret_cast<char*>(&total), sizeof(total));
+    receipt.deserialize(is);
 }

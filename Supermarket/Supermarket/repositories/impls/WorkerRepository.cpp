@@ -1,6 +1,6 @@
 #include "..//headers//WorkerRepository.h"
 
-Vector<Worker*> WorkerRepository::workers;
+const String WorkerRepository::WORKERS_DATA_FILE_NAME = "..//..//data//workers.dat";
 
 const Vector<Worker*>& WorkerRepository::getWorkers() { return workers; }
 
@@ -13,14 +13,14 @@ Worker* WorkerRepository::getById(const String& id) {
 
 Worker* WorkerRepository::getByIdAndPass(const String& id, const String& pass) {
     for (size_t i = 0; i < workers.getLength(); i++) {
-        if (workers[i]->getId() == id && workers[i]->getPassword() == pass)
+        if (workers[i]->getId() == id && workers[i]->password == Hasher::hash(pass))
             return workers[i];
     }
     return nullptr;
 }
 
 void WorkerRepository::add(Worker* worker) { workers.push(worker); }
-void WorkerRepository::remove(const Worker* worker) { workers.remove(worker); }
+void WorkerRepository::remove(Worker* const worker) { workers.remove(worker); }
 
 void WorkerRepository::load() {
     free();
@@ -43,13 +43,11 @@ void WorkerRepository::load() {
 
 void WorkerRepository::save() const {
     std::ofstream file(WorkerRepository::WORKERS_DATA_FILE_NAME, std::ios::binary | std::ios::trunc);
-    if (!file) {
-        throw std::runtime_error("Failed to open workers file!");
-    }
+    if (!file) return;
     size_t length = workers.getLength();
     file.write(reinterpret_cast<const char*>(&length), sizeof(length));
     for (size_t i = 0; i < length; i++) {
-        char roleByte = static_cast<char>(static_cast<Role::RoleEnum>(workers[i]->getRole()));
+        char roleByte = static_cast<char>(static_cast<Role::RoleEnum>(workers[i]->getRole().get()));
         file.write(&roleByte, sizeof(roleByte));
         workers[i]->serialize(file);
     }

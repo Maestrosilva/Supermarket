@@ -10,7 +10,7 @@ void Validator::validateName(const String& name) {
 }
 
 void Validator::validatePhoneNumber(const String& phone) {
-	const phoneNumberLen = 10;
+	const unsigned char phoneNumberLen = 10;
 	if (phone.getSize() != phoneNumberLen) {
 		throw std::invalid_argument("Phone Number must have 10 digits!");
 	}

@@ -1,7 +1,7 @@
-#include "..//headers//ProductsByWeight.h"
+#include "..//headers//ProductByWeight.h"
 
-ProductsByWeight::ProductsByWeight(const String& name, const Category& category, double price, double weight)
-    : Product(name, category, price), weight(weight) {}
+ProductsByWeight::ProductsByWeight(const String& name, const String& categoryId, double price, double weight)
+    : Product(name, categoryId, price), weight(weight) {}
 
 double ProductsByWeight::getQuantity() const { return weight; }
 
@@ -9,6 +9,10 @@ void ProductsByWeight::updateQuantity(double toAdd) { weight += toAdd; }
 
 const ProductType& ProductsByWeight::getType() const {
     return ProductType::BY_WEIGHT;
+}
+
+String ProductsByWeight::toString() const {
+    return getName() + "(" + String::doubleToString(weight, 3) + String("kg") + ") - " + String::doubleToString(price, 2) + String("lv.");
 }
 
 void ProductsByWeight::serialize(std::ostream& os) const {

@@ -16,7 +16,7 @@ private:
 
 	static void reload();
 
-	static void save() const;
+	static void save();
 
 	static void load();
 
@@ -38,15 +38,19 @@ public:
 	static void leave();
 	static void logout();
 
-	static void startTransaction();
 	static void endTransaction();
 
 	static void displayAllWorkers();
-	static void displayAllProducts();
+	static void displayAllProducts(const String& categoryId = "");
 	static void displayAllFeedbacks();
 	static void displayAllTransactions();
 
 	static void sell(Product* product, double quantity);
 
 	static void refill(const String& fileName);
+
+	static Worker* getWorkerById(const String& id);
+	static Product* getProductById(const String& id);
+	static Feedback* getFeedbackById(const String& id);
+	static Transaction* getTransactionById(const String& id);
 };

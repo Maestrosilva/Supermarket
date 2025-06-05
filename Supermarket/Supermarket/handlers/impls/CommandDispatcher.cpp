@@ -6,15 +6,15 @@ void CommandDispatcher::dispatch(const String& line, const Worker* current) {
 		if (tokens.isEmpty()) throw std::invalid_argument("Empty command!");
 		String command = tokens[0];
 		if (current == nullptr) {
-			if (command == "login") {
+			if (command == String("login")) {
 				System::login(tokens.subarray(1));
 			}
-			else if (command == "register") {
+			else if (command == String("register")) {
 				System::registerUser(tokens.subarray(1));
 			}
 			else { throw std::invalid_argument("Invalid command!"); }
 		}
-		switch (current->getRole()) {
+		switch (current->getRole().get()) {
 		case Role::CASHIER:
 			CashierCommandHandler::handle(tokens);
 			break;

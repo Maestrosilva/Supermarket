@@ -1,6 +1,6 @@
 #include "..//headers//FeedbackRepository.h"
 
-Vector<Feedback*> FeedbackRepository::feedbacks;
+const String FeedbackRepository::FEEDBACKS_DATA_FILE_NAME = "..//..//data//feedbacks.dat";
 
 const Vector<Feedback*>& FeedbackRepository::getFeedbacks() { return feedbacks; }
 
@@ -14,7 +14,7 @@ const Feedback* FeedbackRepository::getById(const String& id) {
 }
 
 void FeedbackRepository::add(Feedback* feedback) { feedbacks.push(feedback); }
-void FeedbackRepository::remove(const Feedback* feedback) { feedbacks.remove(feedback); }
+void FeedbackRepository::remove(Feedback* const feedback) { feedbacks.remove(feedback); }
 
 void FeedbackRepository::load() {
     free();
@@ -33,9 +33,7 @@ void FeedbackRepository::load() {
 
 void FeedbackRepository::save() const {
     std::ofstream file(FEEDBACKS_DATA_FILE_NAME, std::ios::binary | std::ios::trunc);
-    if (!file) {
-        throw std::runtime_error("Failed to open feedbacks file!");
-    }
+    if (!file) return;
     size_t length = feedbacks.getLength();
     file.write(reinterpret_cast<const char*>(&length), sizeof(length));
     for (size_t i = 0; i < length; i++) {

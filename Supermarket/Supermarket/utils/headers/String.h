@@ -69,7 +69,7 @@ public:
     bool isBlank() const;
     void clear();
 
-    String operator+=(const String& other) const;
+    String operator+=(const String& other);
     bool operator<(const String& other) const;
     bool operator<=(const String& other) const;
     bool operator>(const String& other) const;
@@ -78,15 +78,14 @@ public:
     bool operator!=(const String& other) const;
     char& operator[](size_t index) const;
     friend std::istream& operator>>(std::istream& in, String& str);
-
-    void friend operator<<(std::ostream& direction, const String& str);
+    friend std::ostream& operator<<(std::ostream& direction, const String& str);
 
     String friend operator+(const String& str1, const String& str2);
 
     static String intToString(long long num);
     static String doubleToString(double value, unsigned char percision);
     static long long toInt(const String& str);
-    static long long toDouble(const String& str);
+    static double toDouble(const String& str);
 
     operator const char* () const;
 

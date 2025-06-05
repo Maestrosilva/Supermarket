@@ -274,19 +274,19 @@ String String::operator+=(const String& other) {
     return append(other);
 }
 
-bool String::operator<(const String& other) { return strcmp(data, other.data) < 0; }
-bool String::operator<=(const String& other) { return strcmp(data, other.data) <= 0; }
-bool String::operator>(const String& other) { return strcmp(data, other.data) > 0; }
-bool String::operator>=(const String& other) { return strcmp(data, other.data) >= 0; }
-bool String::operator==(const String& other) { return strcmp(data, other.data) == 0; }
-bool String::operator!=(const String& other) { return strcmp(data, other.data) != 0; }
+bool String::operator<(const String& other) const{ return strcmp(data, other.data) < 0; }
+bool String::operator<=(const String& other) const { return strcmp(data, other.data) <= 0; }
+bool String::operator>(const String& other) const { return strcmp(data, other.data) > 0; }
+bool String::operator>=(const String& other) const { return strcmp(data, other.data) >= 0; }
+bool String::operator==(const String& other) const { return strcmp(data, other.data) == 0; }
+bool String::operator!=(const String& other) const { return strcmp(data, other.data) != 0; }
 
 char& String::operator[](size_t index) const {
     if (index >= size) throw std::out_of_range("Index out of bounds!");
     return data[index];
 }
 
-std::ostream& operator<<(std::ostream& os, const String& str) {
+std::ostream& operator<<(std::ostream& os, const String& str)  {
     str.out(os);
     return os;
 }
@@ -305,7 +305,7 @@ String operator+(const String& lhs, const String& rhs) {
     return result;
 }
 
-String String::integerToString(long long num) {
+String String::intToString(long long num) {
     if (num == 0) return String("0");
 
     String result;
@@ -390,7 +390,7 @@ double String::toDouble(const String& str) {
     return result;
 }
 
-const char* String::operator const char* () const {
+String::operator const char* () const {
     return data;
 }
 

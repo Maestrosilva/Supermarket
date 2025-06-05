@@ -7,7 +7,7 @@
 class FeedbackRepository : public BaseRepository {
 private:
 	Vector<Feedback*> feedbacks;
-	static constexpr String FEEDBACKS_DATA_FILE_NAME = "..//..//data//feedbacks.dat";
+	static const String FEEDBACKS_DATA_FILE_NAME;
 
 	FeedbackRepository() = default;
 
@@ -15,7 +15,7 @@ private:
 	const Feedback* getById(const String& id);
 
 	void add(Feedback* feedback);
-	void remove(const Feedback* feedback);
+	void remove(Feedback* const feedback);
 
 	void load() override;
 	void save() const override;

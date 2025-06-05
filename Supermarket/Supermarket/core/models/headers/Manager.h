@@ -4,7 +4,7 @@
 
 class Manager : public Worker {
 private:
-	static constexpr String specialCode = "SPEZIALEN_E";
+	static const String specialCode;
 
 public:
 	Manager() = default;
@@ -16,4 +16,6 @@ public:
 	void deserialize(std::istream& is) override;
 
 	static bool authenticate(const String& specialCode);
+
+	~Manager() = default;
 };

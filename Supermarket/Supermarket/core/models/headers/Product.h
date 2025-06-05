@@ -5,16 +5,18 @@
 
 class Product : public Serializable {
 protected:
+	String id;
 	String name;
-	Category category;
+	String categoryId;
 	double price;
 
 public:
 	Product() = default;
-	Product(const String& name, const Category& category, double price)
+	Product(const String& name, const String& categoryId, double price);
 
+	const String& getId() const;
 	const String& getName() const;
-	const Category& getCategory() const;
+	const String& getCategoryId() const;
 	double getPrice() const;
 
 	virtual double getQuantity() const = 0;
@@ -24,7 +26,7 @@ public:
 	void deserialize(std::istream& is) override;
 
 	virtual const ProductType& getType() const = 0;
-
 	virtual String toString() const = 0;
+
 	virtual ~Product() = default;
 };

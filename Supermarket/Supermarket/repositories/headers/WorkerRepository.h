@@ -8,7 +8,7 @@
 class WorkerRepository : public BaseRepository {
 private:
 	Vector<Worker*> workers;
-	static constexpr String WORKERS_DATA_FILE_NAME = "..//..//data//workers.dat";
+	static const String WORKERS_DATA_FILE_NAME;
 
 	WorkerRepository() = default;
 
@@ -17,7 +17,7 @@ private:
 	Worker* getByIdAndPass(const String& id, const String& pass);
 
 	void add(Worker* worker);
-	void remove(const Worker* worker);
+	void remove(Worker* const worker);
 
 	void load() override;
 	void save() const override;

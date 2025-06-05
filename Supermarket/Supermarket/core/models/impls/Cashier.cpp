@@ -3,13 +3,13 @@
 Cashier::Cashier(const String& firstName, const String& lastName, const String& phoneNumber, unsigned char age, const String& password)
 	: Worker(firstName, lastName, phoneNumber, age, password) {}
 
-size_t getTransactionCount() const { return this->transactionsCount; }
+size_t Cashier::getTransactionCount() const { return this->transactionsCount; }
 
-const Vector<Warning>& getWarnings() const { return this->warnings; }
+const Vector<Warning*>& Cashier::getWarnings() const { return this->warnings; }
 
-bool isApproved() const { return this->approved; }
+bool Cashier::isApproved() const { return this->approved; }
 
-const Role& getRole() const { return Role::CASHIER; }
+const Role& Cashier::getRole() const { return Role::CASHIER; }
 
 void Cashier::serialize(std::ostream& os) const {
     Role::RoleEnum role = Role::CASHIER;
@@ -19,7 +19,7 @@ void Cashier::serialize(std::ostream& os) const {
     size_t warningCount = warnings.getLength();
     os.write(reinterpret_cast<const char*>(&warningCount), sizeof(warningCount));
     for (size_t i = 0; i < warningCount; ++i) {
-        warnings[i].serialize(os);
+        warnings[i]->serialize(os);
     }
     os.write(reinterpret_cast<const char*>(&approved), sizeof(approved));
 }
@@ -32,7 +32,13 @@ void Cashier::deserialize(std::istream& is) {
     for (size_t i = 0; i < warningCount; ++i) {
         Warning w;
         w.deserialize(is);
-        warnings.push(w);
+        warnings.push(&w);
     }
     is.read(reinterpret_cast<char*>(&approved), sizeof(approved));
+}
+
+Cashier::~Cashier() {
+    for (size_t i = 0; i < warnings.getLength(); i++) {
+        delete warnings[i];
+    }
 }

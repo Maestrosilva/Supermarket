@@ -3,10 +3,14 @@
 #include "CommandHandler.h"
 
 class CashierCommandHandler{
-private:
+public:
 	static void handle(const Vector<String>& tokens);
 
+private:
 	static void sell();
 
-	friend class CommandDispathcer;
+    static void promptProductSale();
+    static double promptQuantity(Product* product);
+    static void sellProduct(Product* product, double quantity);
+    static void endTransactionSafely();
 };

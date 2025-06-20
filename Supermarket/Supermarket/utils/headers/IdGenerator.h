@@ -13,5 +13,3 @@ public:
 private:
     static int counters[(int)IdType::COUNT];
 };
-
-int IdGenerator::counters[(int)IdType::COUNT] = { 0 };

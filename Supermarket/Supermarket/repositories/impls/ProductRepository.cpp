@@ -28,7 +28,7 @@ void ProductRepository::load() {
         if (!file) break;
         ProductType::ProductTypeEnum enumValue = static_cast<ProductType::ProductTypeEnum>(typeByte);
         ProductType type(enumValue);
-        Product* product = ProductFactory::create(type);
+        Product* product = ProductFactory::create(false, type);
         product->deserialize(file);
         products.push(product);
     }

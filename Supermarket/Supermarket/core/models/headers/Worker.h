@@ -1,7 +1,6 @@
 #pragma once
 #include "..//..//..//utils//_Utils.h"
 #include "../..//enums//_Enums.h"
-#include "..//..//System.h"
 
 class Worker : public Serializable {
 protected:
@@ -23,6 +22,12 @@ public:
 	const String& getLastName() const;
 	const String& getPhoneNumber() const;
 	unsigned char getAge() const;
+
+	void setFirstName(const String& firstName);
+	void setLastName(const String& lastName);
+	void setPhoneNumber(const String& phoneNumber);
+	void setAge(unsigned char age);
+	void setId(const String& id);
 
 	void serialize(std::ostream& os) const override;
 	void deserialize(std::istream& is) override;

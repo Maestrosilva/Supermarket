@@ -9,6 +9,12 @@ const Vector<Warning*>& Cashier::getWarnings() const { return this->warnings; }
 
 bool Cashier::isApproved() const { return this->approved; }
 
+void Cashier::approve() { approved = true; }
+
+void Cashier::addWarning(Warning* const warning) {
+    warnings.push(warning);
+}
+
 const Role& Cashier::getRole() const { return Role::CASHIER; }
 
 void Cashier::serialize(std::ostream& os) const {
@@ -25,20 +31,24 @@ void Cashier::serialize(std::ostream& os) const {
 }
 
 void Cashier::deserialize(std::istream& is) {
+    Role::RoleEnum role;
+    is.read(reinterpret_cast<char*>(&role), sizeof(role));
     Worker::deserialize(is);
     is.read(reinterpret_cast<char*>(&transactionsCount), sizeof(transactionsCount));
     size_t warningCount = 0;
     is.read(reinterpret_cast<char*>(&warningCount), sizeof(warningCount));
     for (size_t i = 0; i < warningCount; ++i) {
-        Warning w;
-        w.deserialize(is);
-        warnings.push(&w);
+        Warning* w = new Warning();
+        w->deserialize(is);
+        warnings.push(w);
     }
     is.read(reinterpret_cast<char*>(&approved), sizeof(approved));
 }
 
 Cashier::~Cashier() {
     for (size_t i = 0; i < warnings.getLength(); i++) {
+        std::cout << "Deleting warning at index " << i << std::endl;
         delete warnings[i];
     }
+    warnings.clear();
 }

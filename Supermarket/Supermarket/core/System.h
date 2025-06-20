@@ -24,10 +24,12 @@ private:
 
 	static void removeCurrent();
 	static String getCustomMessage();
+	static String createReceipt();
 
 public:
 	static Worker* current;
 	static Transaction* currentTransaction;
+	static String currentUserId;
 
 	System() = delete;
 
@@ -53,4 +55,9 @@ public:
 	static Product* getProductById(const String& id);
 	static Feedback* getFeedbackById(const String& id);
 	static Transaction* getTransactionById(const String& id);
+
+	static void listPending();
+	static void listWarnCashiers(size_t minPoints);
+	static void removeWorker(Worker* const worker);
+	static void addWorker(Worker* worker);
 };

@@ -14,18 +14,20 @@ void CommandDispatcher::dispatch(const String& line, const Worker* current) {
 			}
 			else { throw std::invalid_argument("Invalid command!"); }
 		}
-		switch (current->getRole().get()) {
-		case Role::CASHIER:
-			CashierCommandHandler::handle(tokens);
-			break;
-		case Role::MANAGER:
-			ManagerCommandHandler::handle(tokens);
-			break;
-		default:
-			throw std::runtime_error("Invalid role!");
+		else {
+			switch (current->getRole().get()) {
+			case Role::CASHIER:
+				CashierCommandHandler::handle(tokens);
+				break;
+			case Role::MANAGER:
+				ManagerCommandHandler::handle(tokens);
+				break;
+			default:
+				throw std::runtime_error("Invalid role!");
+			}
 		}
 	}
 	catch (const std::exception& e) {
-		throw std::invalid_argument(e.what());
+		std::cerr << e.what() << std::endl;
 	}
 }

@@ -1,8 +1,8 @@
 #pragma once
-#include <iostream>
-#include <stdexcept>
 #include "Vector.h"
 #include "Serializable.h"
+#include <iostream>
+#include <stdexcept>
 
 #pragma warning (disable: 4996)
 
@@ -79,6 +79,8 @@ public:
     char& operator[](size_t index) const;
     friend std::istream& operator>>(std::istream& in, String& str);
     friend std::ostream& operator<<(std::ostream& direction, const String& str);
+
+    friend std::istream& readLine(std::istream& in, String& str);
 
     String friend operator+(const String& str1, const String& str2);
 

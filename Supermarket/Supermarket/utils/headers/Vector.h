@@ -2,11 +2,12 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib> 
-#include <ctime> 
-#include "String.h"
+#include <ctime>
+
+class String;
 
 template <typename T>
-class Vector : public Serializable {
+class Vector {
 private:
     T* data = nullptr;
     size_t length = 0;
@@ -56,11 +57,11 @@ public:
     void sort();
     Vector sorted() const;
 
-    template <typename Func>
-    void map(Func func);
+    template <typename U, typename Mapper>
+    void map(Mapper mapper);
 
-    template <typename Func>
-    Vector mapped(Func func) const;
+    template <typename U, typename Mapper>
+    Vector<U> mapped(Mapper mapper) const;
 
     template <typename Func>
     void foreach(Func func) const;

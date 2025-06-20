@@ -1,3 +1,3 @@
 #include "..//headers//Serializable.h"
 
-Serializable::~Serializable() = default;
+//Serializable::~Serializable() = default;

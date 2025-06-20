@@ -4,7 +4,7 @@ void CommandHandler::handle(const Vector<String>& tokens) {
 	try {
 		String command = tokens[0];
 		if (command == String("list-user-data")) {
-			std::cout << System::current->toString();
+			std::cout << System::current->toString() << std::endl;
 		}
 		else if (command == String("list-workers")) {
 			System::displayAllWorkers();

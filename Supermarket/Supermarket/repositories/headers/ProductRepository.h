@@ -8,7 +8,7 @@
 class ProductRepository : public BaseRepository {
 private:
 	Vector<Product*> products;
-	static const String PRODUCTS_DATA_FILE_NAME = "..//..//data//products.dat";
+	static const String PRODUCTS_DATA_FILE_NAME;
 
 	ProductRepository() = default;
 

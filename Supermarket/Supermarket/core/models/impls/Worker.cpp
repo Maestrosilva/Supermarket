@@ -12,14 +12,25 @@ const String& Worker::getLastName() const { return this->lastName; }
 
 const String& Worker::getPhoneNumber() const { return this->phoneNumber; }
 
+void Worker::setFirstName(const String& firstName) { this->firstName = firstName; }
+
+void Worker::setLastName(const String& lastName) { this->lastName = lastName; }
+
+void Worker::setPhoneNumber(const String& phoneNumber) { this->phoneNumber = phoneNumber; }
+
+void Worker::setAge(unsigned char age) { this->age = age; }
+
+void Worker::setId(const String& id) { this->id = id; }
+
 String Worker::toString() const {
     String toReturn;
     toReturn.append("Id: ").append(id).append(" ");
-    toReturn.append(Role::toString(getRole())).append(" ");
+    Role role = getRole();
+    toReturn.append(Role::toString(role)).append(" ");
     toReturn.append(firstName).append(" ");
     toReturn.append(lastName).append(" ");
     toReturn.append(phoneNumber).append(" ");
-    toReturn.append(String::intToString(age)).append("years old");
+    toReturn.append(String::intToString(age)).append(" years old");
     return toReturn;
 }
 

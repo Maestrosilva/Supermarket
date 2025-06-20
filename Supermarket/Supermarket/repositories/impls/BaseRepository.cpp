@@ -2,6 +2,6 @@
 
 void BaseRepository::reload() {
     save();
-    free();
+    //free();
     load();
 }

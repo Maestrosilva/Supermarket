@@ -4,7 +4,7 @@ const String TransactionRepository::TRANSACTIONS_DATA_FILE_NAME = "..//..//data/
 
 const Vector<Transaction*>& TransactionRepository::getTransactions() { return transactions; }
 
-const Transaction* TransactionRepository::getById(const String& id) {
+Transaction* TransactionRepository::getById(const String& id) {
     for (size_t i = 0; i < transactions.getLength(); ++i) {
         if (transactions[i]->getId() == id) {
             return transactions[i];

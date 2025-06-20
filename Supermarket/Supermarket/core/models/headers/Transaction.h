@@ -1,7 +1,6 @@
 #pragma once
 #include "..//..//..//utils//_Utils.h"
 #include "../..//enums//IdType.h"
-#include "..//..//System.h"
 #include "Product.h"
 #include <fstream>
 
@@ -19,8 +18,6 @@ private:
 
     bool ended = false;
     double total = 0;
-    String receipt = "";
-
 
 public:
     static const String FILE_NAME;
@@ -28,10 +25,12 @@ public:
     Transaction() = default;
     Transaction(const String& cashierId);
 
-    void add(const Pair& pair);
+    void add(const Product* product, double quantity);
 
     const String& getId() const;
     const String& getCashierId() const;
+    const String& getDate() const;
+    const Vector<Pair>& getPairs() const;
     double totalPrice() const;
 
     String toString() const;

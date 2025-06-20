@@ -7,6 +7,7 @@ void CashierCommandHandler::handle(const Vector<String>& tokens) {
 		if (command == String("sell")) {
 			sell();
 		}
+        else { throw std::invalid_argument("Invalid command!"); }
 	}
 	catch (std::exception&) {
 		throw std::invalid_argument("Something went wrong!");
@@ -24,8 +25,8 @@ void CashierCommandHandler::promptProductSale() {
     double quantity;
     while (true) {
         std::cout << "Enter Product Id to sell. Enter 'END' to end the transaction:\n";
-        std::cout << ">";
-        std::cin >> productInput;
+        std::cout << "> ";
+        readLine(std::cin, productInput);
         if (productInput == String("END")) break;
         Product* product = System::getProductById(String::toInt(productInput));
         if (!product) {

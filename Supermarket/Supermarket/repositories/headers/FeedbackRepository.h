@@ -12,7 +12,7 @@ private:
 	FeedbackRepository() = default;
 
 	const Vector<Feedback*>& getFeedbacks();
-	const Feedback* getById(const String& id);
+	Feedback* getById(const String& id);
 
 	void add(Feedback* feedback);
 	void remove(Feedback* const feedback);

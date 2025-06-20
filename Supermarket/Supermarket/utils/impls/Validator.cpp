@@ -1,5 +1,9 @@
 #include "..//headers//Validator.h"
 
+bool isDigit(char ch) {
+	return ch > '0' && ch < '9';
+}
+
 void Validator::validateName(const String& name) {
 	if (name.isBlank()) {
 		throw std::invalid_argument("Name cannot be blank or empty!");
@@ -31,8 +35,4 @@ void Validator::validatePassword(const String& password) {
 	if (password.getSize() < 3) {
 		throw std::invalid_argument("Password must be at least 3 symbols long!");
 	}
-}
-
-bool isDigit(char ch) {
-	return ch > '0' && ch < '9';
 }

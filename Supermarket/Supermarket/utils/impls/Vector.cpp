@@ -233,21 +233,20 @@ Vector<T> Vector<T>::sorted() const {
 }
 
 template <typename T>
-template <typename Func>
-void Vector<T>::map(Func func) {
+template <typename U, typename Mapper>
+void Vector<T>::map(Mapper mapper) {
     for (size_t i = 0; i < this->length; i++) {
-        this->data[i] = func(this->data[i]);
+        data[i] = mapper(data[i]);
     }
 }
 
 template <typename T>
-template <typename Func>
-Vector<T> Vector<T>::mapped(Func func) const {
-    Vector<T> vect;
-    vect.reserve(this->length);
-    this->foreach([&vect, &func](const T& e) {
-        vect.push(func(e));
-        });
+template <typename U, typename Mapper>
+Vector<U> Vector<T>::mapped(Mapper mapper) const {
+    Vector<U> vect;
+    for (size_t i = 0; i < length; i++) {
+        vect.push(mapper(data[i]));
+    }
     return vect;
 }
 
@@ -275,7 +274,6 @@ template <typename T>
 template <typename Predicate>
 Vector<T> Vector<T>::filtered(Predicate predicate) const {
     Vector<T> result;
-    result.reserve(this->length);
     for (size_t i = 0; i < this->length; i++) {
         if (predicate(this->data[i])) {
             result.push(this->data[i]);

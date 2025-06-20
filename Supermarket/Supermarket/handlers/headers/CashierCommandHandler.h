@@ -1,5 +1,6 @@
 #pragma once
 #include "..//..//utils//_Utils.h"
+#include "..//..//core//models//_Models.h"
 #include "CommandHandler.h"
 
 class CashierCommandHandler{

@@ -12,7 +12,7 @@ private:
 	TransactionRepository() = default;
 
 	const Vector<Transaction*>& getTransactions();
-	const Transaction* getById(const String& id);
+	Transaction* getById(const String& id);
 
 	void add(Transaction* transaction);
 	void remove(Transaction* const transaction);

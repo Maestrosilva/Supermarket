@@ -9,5 +9,5 @@
 
 class ProductFactory {
 public:
-    static Product* create(const ProductType& type, const String& name = "", const String& categoryId = "", double price = 0, double quantityOrWeight = 0);
+    static Product* create(bool creational, const ProductType& type, const String& name = "", const String& categoryId = "", double price = 0, double quantityOrWeight = 0);
 };

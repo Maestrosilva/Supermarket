@@ -1,13 +1,13 @@
 #pragma once
 #include "Product.h"
 
-class ProductsByWeight : public Product {
+class ProductByWeight : public Product {
 private:
 	double weight;
 
 public:
-	ProductsByWeight() = default;
-	ProductsByWeight(const String& name, const String& categoryId, double price, double weight);
+	ProductByWeight() = default;
+	ProductByWeight(const String& name, const String& categoryId, double price, double weight);
 
 	double getQuantity() const override;
 	void updateQuantity(double toAdd) override;
@@ -18,6 +18,5 @@ public:
 	void serialize(std::ostream& os) const override;
 	void deserialize(std::istream& is) override;
 
-
-	~ProductsByWeight() = default;
+	~ProductByWeight() = default;
 };

@@ -5,5 +5,5 @@
 
 class Date {
 public:
-	static const String& getCurrentDate();
+	static const String getCurrentDate();
 };

@@ -1,6 +1,6 @@
 #include "..//headers//WorkerRepository.h"
 
-const String WorkerRepository::WORKERS_DATA_FILE_NAME = "..//..//data//workers.dat";
+const String WorkerRepository::WORKERS_DATA_FILE_NAME = "data//workers.dat";
 
 const Vector<Worker*>& WorkerRepository::getWorkers() { return workers; }
 
@@ -34,7 +34,7 @@ void WorkerRepository::load() {
         if (!file) break;
         Role::RoleEnum enumValue = static_cast<Role::RoleEnum>(roleByte);
         Role role(enumValue);
-        Worker* worker = WorkerFactory::create(role);
+        Worker* worker = WorkerFactory::create(false, role);
         worker->deserialize(file);
         workers.push(worker);
     }
@@ -42,7 +42,7 @@ void WorkerRepository::load() {
 }
 
 void WorkerRepository::save() const {
-    std::ofstream file(WorkerRepository::WORKERS_DATA_FILE_NAME, std::ios::binary | std::ios::trunc);
+    std::ofstream file(WorkerRepository::WORKERS_DATA_FILE_NAME, std::ios::binary);
     if (!file) return;
     size_t length = workers.getLength();
     file.write(reinterpret_cast<const char*>(&length), sizeof(length));

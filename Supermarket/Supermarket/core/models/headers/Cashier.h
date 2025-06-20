@@ -16,6 +16,9 @@ public:
 	const Vector<Warning*>& getWarnings() const;
 	bool isApproved() const;
 
+	void approve();
+	void addWarning(Warning* const warning);
+
 	void serialize(std::ostream& os) const override;
 	void deserialize(std::istream& is)override;
 

@@ -1,5 +1,7 @@
 #include "..//..//utils//headers//IdGenerator.h"
 
+int IdGenerator::counters[(int)IdType::COUNT] = { 0 };
+
 int IdGenerator::next(IdType type) {
     return ++counters[(int)type];
 }

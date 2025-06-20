@@ -16,5 +16,7 @@ void Manager::serialize(std::ostream& os) const {
 }
 
 void Manager::deserialize(std::istream& is) {
+    Role::RoleEnum role;
+    is.read(reinterpret_cast<char*>(&role), sizeof(role));
     Worker::deserialize(is);
 }

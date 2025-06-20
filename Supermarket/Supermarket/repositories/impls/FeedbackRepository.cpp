@@ -4,7 +4,7 @@ const String FeedbackRepository::FEEDBACKS_DATA_FILE_NAME = "..//..//data//feedb
 
 const Vector<Feedback*>& FeedbackRepository::getFeedbacks() { return feedbacks; }
 
-const Feedback* FeedbackRepository::getById(const String& id) {
+Feedback* FeedbackRepository::getById(const String& id) {
     for (size_t i = 0; i < feedbacks.getLength(); i++) {
         if (feedbacks[i]->getId() == id) {
             return feedbacks[i];

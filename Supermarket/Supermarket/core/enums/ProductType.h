@@ -1,3 +1,7 @@
+#pragma once
+#include "..//..//utils//headers//String.h"
+#include <stdexcept>
+
 class ProductType {
 public:
     enum ProductTypeEnum {

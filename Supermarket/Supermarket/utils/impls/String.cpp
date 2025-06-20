@@ -10,8 +10,12 @@ void String::free() {
 void String::copyFrom(const String& other) {
     size = other.size;
     capacity = other.capacity;
+    if (capacity < size + 1) {
+        capacity = size + 1;
+    }
     data = new char[capacity];
-    strcpy(data, other.data);
+    memcpy(data, other.data, size);
+    data[size] = '\0';
 }
 
 void String::resize(char ch) {
@@ -299,6 +303,15 @@ std::istream& operator>>(std::istream& in, String& str) {
     return in;
 }
 
+std::istream& readLine(std::istream& in, String& str) {
+    const size_t BUFFER_SIZE = 1024;
+    char buffer[BUFFER_SIZE];
+
+    in.getline(buffer, BUFFER_SIZE);
+    str = String(buffer);
+    return in;
+}
+
 String operator+(const String& lhs, const String& rhs) {
     String result(lhs);
     result.append(rhs);
@@ -401,16 +414,13 @@ void String::serialize(std::ostream& os) const {
 
 void String::deserialize(std::istream& is) {
     size_t newSize;
-    is.read((char*)&newSize, sizeof(newSize));
-
+    is.read(reinterpret_cast<char*>(&newSize), sizeof(newSize));
     free();
-
-    capacity = newSize > DEFAULT_CAPACITY ? newSize : DEFAULT_CAPACITY;
+    capacity = (newSize + 1 > DEFAULT_CAPACITY) ? (newSize + 1) : DEFAULT_CAPACITY;
     data = new char[capacity];
     size = newSize;
-
     is.read(data, size);
-    data[size] = '\0';
+    data[size] = 0;
 }
 
 String::~String() {

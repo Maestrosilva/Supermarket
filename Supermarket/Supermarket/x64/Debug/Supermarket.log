@@ -1,0 +1,21 @@
+﻿  System.cpp
+C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\core\System.cpp(89,29): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\core\System.cpp(107,79): warning C4244: 'argument': conversion from 'double' to '__int64', possible loss of data
+C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\core\System.cpp(133,40): warning C4244: '=': conversion from 'size_t' to 'double', possible loss of data
+C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\core\System.cpp(150,40): warning C4244: '=': conversion from 'size_t' to 'double', possible loss of data
+C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\core\System.cpp(369,41): warning C4244: 'argument': conversion from '__int64' to 'unsigned char', possible loss of data
+C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\core\System.cpp(372,97): warning C4244: 'argument': conversion from '__int64' to 'unsigned char', possible loss of data
+C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\utils\impls\Vector.cpp(60,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  (compiling source file 'core/System.cpp')
+      C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\utils\impls\Vector.cpp(60,15):
+      the template instantiation context (the oldest one first) is
+          C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\core\System.cpp(79,20):
+          see reference to class template instantiation 'Vector<String>' being compiled
+          C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\utils\impls\Vector.cpp(53,36):
+          while compiling class template member function 'Vector<String>::Vector(size_t)'
+              C:\Users\ГЕРО\source\repos\Supermarket\Supermarket\core\System.cpp(79,20):
+              see the first reference to 'Vector<String>::Vector' in 'System::getCustomMessage'
+  
+  CashierCommandHandler.cpp
+  Generating Code...
+LINK : fatal error LNK1168: cannot open C:\Users\ГЕРО\source\repos\Supermarket\x64\Debug\Supermarket.exe for writing

@@ -1,7 +1,7 @@
 #include "..//headers//Validator.h"
 
 bool isDigit(char ch) {
-	return ch > '0' && ch < '9';
+	return ch >= '0' && ch <= '9';
 }
 
 void Validator::validateName(const String& name) {
@@ -10,6 +10,9 @@ void Validator::validateName(const String& name) {
 	}
 	if (name.trimmed().contains(" ")) {
 		throw std::invalid_argument("Name cannot contain empty spaces!");
+	}
+	if (name.getSize() <= 1 || name.getSize() >= 30) {
+		throw std::invalid_argument("Name length must be between 2 and 29 characters");
 	}
 }
 

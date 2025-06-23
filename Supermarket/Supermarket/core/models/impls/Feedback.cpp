@@ -12,7 +12,7 @@ const String& Feedback::getDate() const { return date; }
 const String& Feedback::getId() const { return id; }
 
 String Feedback::toString() const {
-	return String("Id: ") + id + String(" | Cashier Id: ") + workerId + String(" | ") + date + String(" | ") + description;
+	return String("Id: ") + id + String(" | Worker Id: ") + workerId + String(" | ") + date + String(" | ") + description;
 }
 
 void Feedback::serialize(std::ostream& os) const {

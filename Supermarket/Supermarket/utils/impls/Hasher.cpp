@@ -16,11 +16,24 @@ String Hasher::hash(const String& str) {
 String Hasher::encrypt(const String& str) {
     String output = str;
     for (size_t i = 0; i < output.getSize(); ++i) {
-        output[i] ^= key;
+        char c = output[i] ^ key;
+        if (c == '\n') {
+            c = ' ';
+        }
+        output[i] = c;
     }
     return output;
 }
 
 String Hasher::decrypt(const String& str) {
-    return encrypt(str);
+    String output = str;
+    for (size_t i = 0; i < output.getSize(); ++i) {
+        char c = output[i];
+        c = c ^ key;
+        if (c == '\n') {
+            c = ' ';
+        }
+        output[i] = c;
+    }
+    return output;
 }

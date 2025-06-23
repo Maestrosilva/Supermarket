@@ -85,24 +85,51 @@ void tests() {
 
 int main() {
     System::run();
-    //tests();
 }
 
 /*
-register manager A A 20 20 P
-register cashier B B 20 20 B
+register manager Ivan Ivanov 0880880888 44 Password
+register manager III III 0880880888 10 PP
 
-login 3 P
-login 2 B
+logout
+leave
+
+register cashier Gosho Ghoshov 0123456789 31 Parola
+
+login 1 Password
+login 2 Parola
+login 1 wPassword
+
+sell
 
 list-user-data
 list-workers
-list-products
-list-products 1
-list-feed
-list-transactions
-leave
-logout
 
 list-pending
+
+approve 2 SPECIAL
+approve 3 SPECIAL
+promote-cashier 2 SPECIAL
+promote-cashier 3 SPECIAL
+decline 4 SPECIAL
+fire-cashier 4 SPECIAL
+
+add-category Meat Meat is delicious
+delete-category 1
+
+add-product by_unit Steak 1 9.99
+add-product by_weight Beef 1 17.99
+
+delete-product 1
+delete-product 2
+
+load-products data//products-initializer.txt
+load-products data//product-loader.txt
+
+list-products
+list-products 1
+
+list-feed
+list-transactions
+list-categories
 */

@@ -1,12 +1,21 @@
 #include "..//headers//CategoryRepository.h"
 
-const String CategoryRepository::CATEGORIES_DATA_FILE_NAME = "..//..//data//categories.dat";
+const String CategoryRepository::CATEGORIES_DATA_FILE_NAME = "data//categories.dat";
 
 const Vector<Category*>& CategoryRepository::getCategories() { return categories; }
 
-const Category* CategoryRepository::getById(const String& id) {
+Category* CategoryRepository::getById(const String& id) {
     for (size_t i = 0; i < categories.getLength(); i++) {
         if (categories[i]->getId() == id) {
+            return categories[i];
+        }
+    }
+    return nullptr;
+}
+
+Category* CategoryRepository::getByName(const String& name) {
+    for (size_t i = 0; i < categories.getLength(); i++) {
+        if (categories[i]->getName() == name) {
             return categories[i];
         }
     }

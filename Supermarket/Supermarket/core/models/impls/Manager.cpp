@@ -1,6 +1,6 @@
 #include "..//headers//Manager.h"
 
-const String Manager::specialCode = "SPEZIALEN_E";
+const String Manager::specialCode = "SPECIAL";
 
 Manager::Manager(const String& firstName, const String& lastName, const String& phoneNumber, unsigned char age, const String& password)
 	: Worker(firstName, lastName, phoneNumber, age, password) {}

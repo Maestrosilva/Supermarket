@@ -12,7 +12,8 @@ private:
 	CategoryRepository() = default;
 
 	const Vector<Category*>& getCategories();
-	const Category* getById(const String& id);
+	Category* getById(const String& id);
+	Category* getByName(const String& name);
 
 	void add(Category* category);
 	void remove(Category* const category);

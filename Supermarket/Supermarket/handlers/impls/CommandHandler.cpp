@@ -1,6 +1,6 @@
 #include "..//headers//CommandHandler.h"
 
-void CommandHandler::handle(const Vector<String>& tokens) {
+bool CommandHandler::handle(const Vector<String>& tokens) {
 	try {
 		String command = tokens[0];
 		if (command == String("list-user-data")) {
@@ -18,12 +18,19 @@ void CommandHandler::handle(const Vector<String>& tokens) {
 		else if (command == String("list-transactions")) {
 			System::displayAllTransactions();
 		}
+		else if (command == String("list-categories")){
+			System::displayAllCategories();
+		}
 		else if (command == String("leave")) {
 			System::leave();
 		}
 		else if (command == String("logout")) {
 			System::logout();
 		}
+		else {
+			return false;
+		}
+		return true;
 	}
 	catch (std::exception) {
 		throw std::invalid_argument("Something went wrong!");

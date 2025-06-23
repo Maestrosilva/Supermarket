@@ -22,6 +22,8 @@ void Worker::setAge(unsigned char age) { this->age = age; }
 
 void Worker::setId(const String& id) { this->id = id; }
 
+void Worker::setPassword(const String& password) { this->password = password; }
+
 String Worker::toString() const {
     String toReturn;
     toReturn.append("Id: ").append(id).append(" ");

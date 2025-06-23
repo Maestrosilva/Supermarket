@@ -28,6 +28,7 @@ public:
 	void setPhoneNumber(const String& phoneNumber);
 	void setAge(unsigned char age);
 	void setId(const String& id);
+	void setPassword(const String& password);
 
 	void serialize(std::ostream& os) const override;
 	void deserialize(std::istream& is) override;
@@ -38,4 +39,5 @@ public:
 	virtual ~Worker();
 
 	friend class WorkerRepository;
+	friend class WorkerFactory;
 };

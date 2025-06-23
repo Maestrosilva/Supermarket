@@ -1,6 +1,6 @@
 #include "..//headers//FeedbackRepository.h"
 
-const String FeedbackRepository::FEEDBACKS_DATA_FILE_NAME = "..//..//data//feedbacks.dat";
+const String FeedbackRepository::FEEDBACKS_DATA_FILE_NAME = "data//feedbacks.dat";
 
 const Vector<Feedback*>& FeedbackRepository::getFeedbacks() { return feedbacks; }
 

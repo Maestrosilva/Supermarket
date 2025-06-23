@@ -1,12 +1,31 @@
 #include "..//headers//ProductRepository.h"
 
-const String ProductRepository::PRODUCTS_DATA_FILE_NAME = "..//..//data//products.dat";
+const String ProductRepository::PRODUCTS_DATA_FILE_NAME = "data//products.dat";
 
 const Vector<Product*>& ProductRepository::getProducts() { return products; }
 
 Product* ProductRepository::getById(const String& id) {
     for (size_t i = 0; i < products.getLength(); i++) {
         if (products[i]->getId() == id) {
+            return products[i];
+        }
+    }
+    return nullptr;
+}
+
+Vector<Product*> ProductRepository::getByCategoryId(const String& id) {
+    Vector<Product*> vect;
+    for (size_t i = 0; i < products.getLength(); i++) {
+        if (products[i]->getCategoryId() == id) {
+            return vect.push(products[i]);
+        }
+    }
+    return vect;
+}
+
+Product* ProductRepository::getByName(const String& name) {
+    for (size_t i = 0; i < products.getLength(); i++) {
+        if (products[i]->getName() == name) {
             return products[i];
         }
     }

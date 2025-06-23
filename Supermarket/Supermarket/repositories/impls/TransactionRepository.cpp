@@ -1,6 +1,6 @@
 #include "..//headers//TransactionRepository.h"
 
-const String TransactionRepository::TRANSACTIONS_DATA_FILE_NAME = "..//..//data//transactions.dat";
+const String TransactionRepository::TRANSACTIONS_DATA_FILE_NAME = "data//transactions.dat";
 
 const Vector<Transaction*>& TransactionRepository::getTransactions() { return transactions; }
 

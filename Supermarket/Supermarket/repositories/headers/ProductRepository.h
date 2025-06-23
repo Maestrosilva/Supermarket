@@ -14,6 +14,8 @@ private:
 
 	const Vector<Product*>& getProducts();
 	Product* getById(const String& id);
+	Vector<Product*> getByCategoryId(const String& id);
+	Product* getByName(const String& name);
 
 	void add(Product* product);
 	void remove(Product* const product);

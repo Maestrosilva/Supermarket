@@ -6,7 +6,11 @@ int IdGenerator::next(IdType type) {
     return ++counters[(int)type];
 }
 
-void IdGenerator::serialize(std::ostream& os) const {
+void IdGenerator::rollback(IdType type) {
+    --counters[(int)type];
+}
+
+void IdGenerator::serialize(std::ostream& os) {
     for (int i = 0; i < (int)IdType::COUNT; i++) {
         os.write(reinterpret_cast<const char*>(&counters[i]), sizeof(int));
     }

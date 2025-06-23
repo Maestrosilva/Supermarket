@@ -26,8 +26,8 @@ public:
     }
 
     static ProductType get(const String& type) {
-        if (type.lowered() == String("by unit")) { return ProductType::BY_UNIT; }
-        else if (type.lowered() == String("by weight")) { return ProductType::BY_WEIGHT; }
+        if (type.lowered() == String("by_unit")) { return ProductType::BY_UNIT; }
+        else if (type.lowered() == String("by_weight")) { return ProductType::BY_WEIGHT; }
         else { throw std::invalid_argument("Invalid type!"); }
     }
 

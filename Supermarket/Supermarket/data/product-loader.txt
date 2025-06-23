@@ -1,2 +1,2 @@
-ProductsByUnit:1:10
-ProductsByWeight:2:5
+Steak:10
+Beef:5.505

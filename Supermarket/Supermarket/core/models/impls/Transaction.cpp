@@ -1,6 +1,6 @@
 #include "..//headers//Transaction.h"
 
-const String Transaction::FILE_NAME = "..//..//receipts//receipt_";
+const String Transaction::FILE_NAME = "data//receipts//receipt_";
 
 Transaction::Transaction(const String& cashierId)
     : id(String::intToString(IdGenerator::next(IdType::TRANSACTION))),

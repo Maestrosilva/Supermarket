@@ -15,6 +15,10 @@ private:
 	static void warn(const Vector<String>& tokens);
 	static void promote(const Vector<String>& tokens);
 	static void fire(const Vector<String>& tokens);
+	static void addCategory(const Vector<String>& tokens);
+	static void deleteCategory(const Vector<String>& tokens);
+	static void addProduct(const Vector<String>& tokens);
+	static void deleteProduct(const Vector<String>& tokens);
 
 	static Cashier* getCashierById(const String& cashierId);
 };

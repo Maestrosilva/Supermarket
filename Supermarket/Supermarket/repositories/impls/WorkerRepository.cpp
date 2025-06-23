@@ -19,6 +19,14 @@ Worker* WorkerRepository::getByIdAndPass(const String& id, const String& pass) {
     return nullptr;
 }
 
+Worker* WorkerRepository::getByName(const String& firstName, const String& lastName) {
+    for (size_t i = 0; i < workers.getLength(); i++) {
+        if (workers[i]->getFirstName() == firstName && workers[i]->getLastName() == lastName)
+            return workers[i];
+    }
+    return nullptr;
+}
+
 void WorkerRepository::add(Worker* worker) { workers.push(worker); }
 void WorkerRepository::remove(Worker* const worker) { workers.remove(worker); }
 

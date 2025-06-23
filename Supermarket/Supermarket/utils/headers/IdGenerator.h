@@ -4,11 +4,12 @@
 #include "Serializable.h"
 #include <fstream>
 
-class IdGenerator : public Serializable {
+class IdGenerator {
 public:
     static int next(IdType type);
-    void serialize(std::ostream& os) const override;
-    void deserialize(std::istream& is) override;
+    static void rollback(IdType type);
+    static void serialize(std::ostream& os);
+    static void deserialize(std::istream& is);
 
 private:
     static int counters[(int)IdType::COUNT];

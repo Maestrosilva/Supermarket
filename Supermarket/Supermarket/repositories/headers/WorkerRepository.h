@@ -15,6 +15,7 @@ private:
 	const Vector<Worker*>& getWorkers();
 	Worker* getById(const String& id);
 	Worker* getByIdAndPass(const String& id, const String& pass);
+	Worker* getByName(const String& firstName, const String& lastName);
 
 	void add(Worker* worker);
 	void remove(Worker* const worker);

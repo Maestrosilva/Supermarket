@@ -1,2 +1,3 @@
-new:ProductsByUnit:Bananas:100
-new:ProductsByWeight:Lutenichka:50
+new:By_Unit:Bananas:Fruits:2.99:100
+new:By_Unit:Mango:Fruits:3.99:50
+new:By_Weight:Pileshko:Meat:13.99:11.1

@@ -306,7 +306,6 @@ std::istream& operator>>(std::istream& in, String& str) {
 std::istream& readLine(std::istream& in, String& str) {
     const size_t BUFFER_SIZE = 1024;
     char buffer[BUFFER_SIZE];
-
     in.getline(buffer, BUFFER_SIZE);
     str = String(buffer);
     return in;
@@ -379,7 +378,7 @@ double String::toDouble(const String& str) {
     else if (str[i] == '+') {
         i++;
     }
-    for (; str[i] != '\0'; ++i) {
+    for (; i < str.getSize(); ++i) {
         if (str[i] == '.') {
             if (pastDecimal) break;
             pastDecimal = true;

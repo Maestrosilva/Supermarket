@@ -4,6 +4,7 @@ WorkerRepository System::workerRepository;
 ProductRepository System::productRepository;
 FeedbackRepository System::feedbackRepository;
 TransactionRepository System::transactionRepository;
+CategoryRepository System::categoryRepository;
 
 Worker* System::current = nullptr;
 Transaction* System::currentTransaction = nullptr;
@@ -14,23 +15,32 @@ void System::reload() {
     productRepository.reload();
     feedbackRepository.reload();
     transactionRepository.reload();
+    categoryRepository.reload();
     if (currentUserId != String("-1")) {
         current = workerRepository.getById(currentUserId);
     }
 }
 
 void System::save() {
+    std::ofstream file("data//ids.dat", std::ios::binary, std::ios::trunc);
+    IdGenerator::serialize(file);
+    file.close();
     workerRepository.save();
     productRepository.save();
     feedbackRepository.save();
     transactionRepository.save();
+    categoryRepository.save();
 }
 
 void System::load() {
+    std::ifstream file("data//ids.dat", std::ios::binary);
+    IdGenerator::deserialize(file);
+    file.close();
     workerRepository.load();
     productRepository.load();
     feedbackRepository.load();
     transactionRepository.load();
+    categoryRepository.load();
     if (currentUserId != String("-1")) {
         current = workerRepository.getById(currentUserId);
     }
@@ -42,6 +52,7 @@ void System::free() {
     productRepository.free();
     feedbackRepository.free();
     transactionRepository.free();
+    categoryRepository.free();
     delete current;
     current = nullptr;
     delete currentTransaction;
@@ -56,7 +67,6 @@ void System::free() {
     }
 }
 
-
 void System::removeCurrent() {
     if (current) {
         workerRepository.remove(current);
@@ -67,10 +77,10 @@ void System::removeCurrent() {
 
 String System::getCustomMessage() {
     Vector<String> messages;
-    std::ifstream file("..//..//data//no-data.txt");
+    std::ifstream file("data//no-data.txt");
     if (!file) return "";
     String line;
-    while (file >> line) {
+    while (readLine(file, line)) {
         messages.push(line);
     }
     file.close();
@@ -88,23 +98,61 @@ String System::createReceipt() {
     receipt.append("RECEIPT\n");
     receipt.append("TRANSACTION_ID: ").append(currentTransaction->getId()).append("\n");
     receipt.append("CASHIER_ID: ").append(currentTransaction->getCashierId()).append("\n");
-    receipt.append(currentTransaction->getDate()).append("\n");
     receipt.append("<----------------------------->\n");
     Vector<Pair> pairs = currentTransaction->getPairs();
     for (size_t i = 0; i < pairs.getLength(); i++) {
         Product* product = productRepository.getById(pairs[i].productId);
         double price = product->getPrice();
         switch (product->getType().get()) {
-            std::cout << product->getName() << std::endl;
         case ProductType::BY_UNIT: receipt.append(String::intToString(pairs[i].quantity));
+            break;
         case ProductType::BY_WEIGHT: receipt.append(String::doubleToString(pairs[i].quantity, 3));
+            break;
         default: throw std::runtime_error("Invalid type!");
         }
         receipt.append("*").append(String::doubleToString(price, 2)).append(" - ");
         receipt.append(String::doubleToString(price * pairs[i].quantity, 2).append("\n"));
-        receipt.append("###").append("\n");
+        receipt.append("\n").append("###").append("\n\n");
     }
-    receipt.append("Total: ").append(currentTransaction->totalPrice()).append("\n");
+    receipt.append(currentTransaction->getDate()).append("\n");
+    receipt.append("Total: ").append(String::doubleToString(currentTransaction->totalPrice(), 2));
+    return receipt;
+}
+
+void System::handleRestock(const Vector<String>& args) {
+    if (args.getLength() < 2) {
+        throw std::runtime_error("Invalid format for restock!");
+    }
+    String name = args[0];
+    Product* product = productRepository.getByName(name);
+    if (!product) {
+        throw std::runtime_error("Product not found: " + name);
+    }
+    double quantity = String::toDouble(args[1]);
+    if (product->getType() == ProductType::BY_UNIT) {
+        quantity = static_cast<size_t>(quantity);
+    }
+    product->updateQuantity(quantity);
+}
+
+void System::handleNewProduct(const Vector<String>& args) {
+    if (args.getLength() < 6) return;
+    ProductType type = ProductType::get(args[1]);
+    String name = args[2];
+    Category* category = categoryRepository.getByName(args[3]);
+    if (!category) {
+        category = new Category(args[3], "");
+        addCategory(category);
+    }
+    double price = String::toDouble(args[4]);
+    double quantity = String::toDouble(args[5]);
+    if (type == ProductType::BY_UNIT) {
+        quantity = static_cast<size_t>(quantity);
+    }
+    createProduct(type, name, category->getId(), price);
+    if (Product* product = productRepository.getByName(name)) {
+        product->updateQuantity(quantity);
+    }
 }
 
 void System::refill(const String& fileName) {
@@ -115,30 +163,15 @@ void System::refill(const String& fileName) {
         Vector<String> args = line.split(':');
         if (args.getLength() < 2) continue;
         if (args[0] == String("new")) {
-            ProductType pt = ProductType::get(args[1]);
-            String name = args[2];
-            String categoryName = args[3];
-            Product* p = ProductFactory::create(true, pt);
-            productRepository.add(p);
+            handleNewProduct(args);
         }
         else {
-            if (args.getLength() < 3) {
-                file.close();
-                throw std::runtime_error("Invalid format!");
-            }
-            Product* product = productRepository.getById(args[1]);
-            if (!product) {
-                file.close();
-                throw std::runtime_error("Product not found with ID: " + args[1]);
-            }
-            double quantity = String::toDouble(args[2]);
-            if (product->getType() == ProductType::BY_UNIT) {
-                quantity = static_cast<size_t>(quantity);
-            }
-            product->updateQuantity(quantity);
+            handleRestock(args);
         }
     }
-    file.close();
+    String feed = "Products loaded from: " + fileName;
+    std::cout << feed << std::endl;
+    createFeed(feed);
 }
 
 void System::endTransaction() {
@@ -153,8 +186,13 @@ void System::endTransaction() {
     if (!file) {
         throw std::runtime_error("Failed to open receipt file: " + fileName);
     }
-    file << currentTransaction->toString() << "\n\n";
+    file << createReceipt();
     file.close();
+    String feed = String("Transaction with id ") + currentTransaction->getId() + String(" ended!");
+    std::cout << feed << std::endl;
+    std::cout << "Receipt seved as: " << fileName << std::endl;
+    std::cout << "Total: " << currentTransaction->totalPrice() << std::endl;
+    createFeed(feed);
     currentTransaction = nullptr;
 }
 
@@ -163,20 +201,32 @@ void System::displayAllWorkers() {
 }
 
 void System::displayAllProducts(const String& categoryId) {
+    unsigned short number = 0;
     if (categoryId == String("")) {
-        productRepository.getProducts().foreach([](const Product* p) {std::cout << p->toString() << std::endl; });
+        productRepository.getProducts()
+            .foreach([&](const Product* p) { std::cout << p->getId() << ". " << p->toString() 
+                << " - " << categoryRepository.getById(p->getCategoryId())->getName() << std::endl; });
     }
     else {
-        productRepository.getProducts().filtered([&](const Product* p) {return p->getCategoryId() == categoryId; }).foreach([](const Product* p) {std::cout << p->toString() << std::endl; });
+        productRepository.getProducts()
+            .filtered([&](const Product* p) {return p->getCategoryId() == categoryId; })
+            .foreach([&](const Product* p) { std::cout << ++number << ". " << p->toString() << std::endl; });
     }
 }
 
-void System::displayAllFeedbacks() {
-    feedbackRepository.getFeedbacks().foreach([](const Feedback* f) {std::cout << f->toString() << std::endl; });
+void System::displayAllFeedbacks(size_t limit) {
+    feedbackRepository.getFeedbacks().reversed()
+        .foreach([&](const Feedback* f) {
+        if (limit--) { std::cout << f->toString() << std::endl; }});
 }
 
 void System::displayAllTransactions() {
     transactionRepository.getTransactions().foreach([](const Transaction* t) {std::cout << t->getCashierId() << " " << t->totalPrice() << "lv." << std::endl; });
+}
+
+void System::displayAllCategories() {
+    unsigned short number = 0;
+    categoryRepository.getCategories().foreach([&](const Category* c) {std::cout << ++number << ". " << c->getName() << std::endl; });
 }
 
 void System::sell(Product* product, double quantity) {
@@ -202,6 +252,10 @@ Feedback* System::getFeedbackById(const String& id) {
 }
 Transaction* System::getTransactionById(const String& id) {
     return transactionRepository.getById(id);
+}
+
+Category* System::getCategoryById(const String& id) {
+    return categoryRepository.getById(id);
 }
 
 void System::listPending() {
@@ -233,11 +287,58 @@ void System::listWarnCashiers(size_t minPoints) {
 }
 
 void System::removeWorker(Worker* const worker) {
+    if (!worker) {
+        throw std::runtime_error("Worker with this id does not exist!");
+    }
     workerRepository.remove(worker);
 }
 
-void System::addWorker(Worker* worker) {
+void System::addWorker(Worker* const worker) {
+    if (workerRepository.getByName(worker->getFirstName(), worker->getLastName())) {
+        IdGenerator::rollback(IdType::WORKER);
+        throw std::runtime_error("Worker with this name already exist!");
+    }
     workerRepository.add(worker);
+}
+
+void System::addCategory(Category* const category) {
+    if (categoryRepository.getByName(category->getName())) {
+        IdGenerator::rollback(IdType::PRODUCT);
+        throw std::runtime_error("Category with this name already exists!");
+    }
+    categoryRepository.add(category);
+}
+
+void System::deleteCategory(Category* const category) {
+    if (!category) {
+        throw std::runtime_error("Category with this id does not exist!");
+    }
+    if (!productRepository.getByCategoryId(category->getId()).isEmpty()) {
+        throw std::runtime_error("Products with this category still exist!");
+    }
+    categoryRepository.remove(category);
+}
+
+void System::createProduct(const ProductType type, const String& name, const String& categoryId, double price) {
+    if (!categoryRepository.getById(categoryId)) {
+        throw std::runtime_error("Category with this id doesn't exist!");
+    }
+    if (price < 0) {
+        throw std::runtime_error("Price cannot be negative!");
+    }
+    if (productRepository.getByName(name)) {
+        throw std::runtime_error("Product with this name already exists!");
+    }
+    Product* p = ProductFactory::create(true, type, name, categoryId, price);
+    productRepository.add(p);
+}
+
+void System::deleteProduct(Product* const product) {
+
+}
+
+void System::createFeed(const String& feed) {
+    feedbackRepository.add(new Feedback(currentUserId, feed));
 }
 
 void System::login(const Vector<String> tokens) {
@@ -262,10 +363,14 @@ void System::registerUser(const Vector<String> tokens) {
     if (tokens.getLength() < 6) {
         throw std::runtime_error("Invalid format!");
     }
+    Validator::validateName(tokens[1]);
+    Validator::validateName(tokens[2]);
+    Validator::validatePhoneNumber(tokens[3]);
+    Validator::validateAge(String::toInt(tokens[4]));
+    Validator::validatePassword(tokens[5]);
     Role role = Role::get(tokens[0]);
-    Worker* w = WorkerFactory::create(true, role, tokens[1], tokens[2], tokens[3], (unsigned char)String::toInt(tokens[4]), tokens[5]);
-    workerRepository.add(w);
-    workerRepository.save();
+    Worker* w = WorkerFactory::create(true, role, tokens[1], tokens[2], tokens[3], String::toInt(tokens[4]), tokens[5]);
+    addWorker(w);
     std::cout << "Successful registration!" << std::endl;
     if (role == Role::CASHIER) {
         std::cout << "Pending for approval from a manager!" << std::endl;
@@ -273,11 +378,14 @@ void System::registerUser(const Vector<String> tokens) {
     }
     current = w;
     currentUserId = w->getId();
+    createFeed("Worker registered!");
 }
 
 void System::leave() {
     removeCurrent();
     save();
+    std::cout << getCustomMessage() << std::endl;
+    createFeed("Worker left!");
 }
 
 void System::logout() {

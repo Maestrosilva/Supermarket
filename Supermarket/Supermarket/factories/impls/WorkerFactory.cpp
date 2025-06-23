@@ -30,5 +30,6 @@ Manager* WorkerFactory::promote(const Cashier* cashier) {
     manager->setLastName(cashier->getLastName());
     manager->setPhoneNumber(cashier->getPhoneNumber());
     manager->setAge(cashier->getAge());
+    manager->setPassword(cashier->password);
     return manager;
 }

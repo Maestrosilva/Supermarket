@@ -11,20 +11,16 @@ Transaction* System::currentTransaction = nullptr;
 String System::currentUserId = "-1";
 
 void System::reload() {
-    workerRepository.reload();
-    productRepository.reload();
-    feedbackRepository.reload();
-    transactionRepository.reload();
-    categoryRepository.reload();
+    IdGenerator::reload();
+    save();
+    free();
+    load();
     if (currentUserId != String("-1")) {
         current = workerRepository.getById(currentUserId);
     }
 }
 
 void System::save() {
-    std::ofstream file("data//ids.dat", std::ios::binary, std::ios::trunc);
-    IdGenerator::serialize(file);
-    file.close();
     workerRepository.save();
     productRepository.save();
     feedbackRepository.save();
@@ -33,17 +29,11 @@ void System::save() {
 }
 
 void System::load() {
-    std::ifstream file("data//ids.dat", std::ios::binary);
-    IdGenerator::deserialize(file);
-    file.close();
     workerRepository.load();
     productRepository.load();
     feedbackRepository.load();
     transactionRepository.load();
     categoryRepository.load();
-    if (currentUserId != String("-1")) {
-        current = workerRepository.getById(currentUserId);
-    }
 }
 
 void System::free() {
@@ -53,8 +43,6 @@ void System::free() {
     feedbackRepository.free();
     transactionRepository.free();
     categoryRepository.free();
-    delete current;
-    current = nullptr;
     delete currentTransaction;
     currentTransaction = nullptr;
     if (savedUserId != String("-1")) {
@@ -102,6 +90,7 @@ String System::createReceipt() {
     Vector<Pair> pairs = currentTransaction->getPairs();
     for (size_t i = 0; i < pairs.getLength(); i++) {
         Product* product = productRepository.getById(pairs[i].productId);
+        receipt.append(product->getName()).append("\n");
         double price = product->getPrice();
         switch (product->getType().get()) {
         case ProductType::BY_UNIT: receipt.append(String::intToString(pairs[i].quantity));
@@ -160,13 +149,18 @@ void System::refill(const String& fileName) {
     if (!file) throw std::runtime_error("Failed to open file!");
     String line;
     while (file >> line) {
-        Vector<String> args = line.split(':');
-        if (args.getLength() < 2) continue;
-        if (args[0] == String("new")) {
-            handleNewProduct(args);
+        try {
+            Vector<String> args = line.split(':');
+            if (args.getLength() < 2) continue;
+            if (args[0] == String("new")) {
+                handleNewProduct(args);
+            }
+            else {
+                handleRestock(args);
+            }
         }
-        else {
-            handleRestock(args);
+        catch (std::exception) {
+            continue;
         }
     }
     String feed = "Products loaded from: " + fileName;
@@ -209,8 +203,9 @@ void System::displayAllProducts(const String& categoryId) {
     }
     else {
         productRepository.getProducts()
-            .filtered([&](const Product* p) {return p->getCategoryId() == categoryId; })
-            .foreach([&](const Product* p) { std::cout << ++number << ". " << p->toString() << std::endl; });
+            .filtered([&](const Product* p) { return p->getCategoryId() == categoryId; })
+            .foreach([&](const Product* p) { std::cout << p->getId() << ". " << p->toString()
+                << " - " << categoryRepository.getById(p->getCategoryId())->getName() << std::endl; });
     }
 }
 
@@ -221,12 +216,14 @@ void System::displayAllFeedbacks(size_t limit) {
 }
 
 void System::displayAllTransactions() {
-    transactionRepository.getTransactions().foreach([](const Transaction* t) {std::cout << t->getCashierId() << " " << t->totalPrice() << "lv." << std::endl; });
+    transactionRepository.getTransactions()
+        .foreach([](const Transaction* t) {std::cout << t->toString() << std::endl; });
 }
 
 void System::displayAllCategories() {
     unsigned short number = 0;
-    categoryRepository.getCategories().foreach([&](const Category* c) {std::cout << ++number << ". " << c->getName() << std::endl; });
+    categoryRepository.getCategories()
+        .foreach([&](const Category* c) {std::cout << ++number << ". " << c->toString() << std::endl; });
 }
 
 void System::sell(Product* product, double quantity) {
@@ -334,7 +331,10 @@ void System::createProduct(const ProductType type, const String& name, const Str
 }
 
 void System::deleteProduct(Product* const product) {
-
+    if (!product) {
+        throw std::runtime_error("Product with this id does not exist!");
+    }
+    productRepository.remove(product);
 }
 
 void System::createFeed(const String& feed) {
@@ -378,14 +378,14 @@ void System::registerUser(const Vector<String> tokens) {
     }
     current = w;
     currentUserId = w->getId();
-    createFeed("Worker registered!");
+    createFeed(String("Worker with id ") + currentUserId + String("registered!"));
 }
 
 void System::leave() {
+    createFeed(String("Worker with id ") + currentUserId + String("left!"));
     removeCurrent();
     save();
     std::cout << getCustomMessage() << std::endl;
-    createFeed("Worker left!");
 }
 
 void System::logout() {
@@ -397,6 +397,7 @@ void System::logout() {
 
 void System::run() {
     load();
+    std::cout << "Welcome to Supermarket System!" << std::endl;
     String line;
     while (true) {
         std::cout << "> ";
@@ -406,5 +407,6 @@ void System::run() {
         reload();
         std::cout << std::endl;
     }
-    save();
+    free();
+    delete current;
 }

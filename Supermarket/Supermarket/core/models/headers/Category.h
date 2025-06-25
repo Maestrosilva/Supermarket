@@ -16,6 +16,8 @@ public:
     const String& getName() const;
     const String& getDescription() const;
 
+    String toString() const;
+
     void serialize(std::ostream& os) const override;
     void deserialize(std::istream& is) override;
 

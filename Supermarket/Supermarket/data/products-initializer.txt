@@ -1,3 +1,3 @@
 new:By_Unit:Bananas:Fruits:2.99:100
 new:By_Unit:Mango:Fruits:3.99:50
-new:By_Weight:Pileshko:Meat:13.99:11.1
+new:By_Weight:Milk:Diary:13.99:11.1

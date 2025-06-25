@@ -10,6 +10,7 @@ public:
     static void rollback(IdType type);
     static void serialize(std::ostream& os);
     static void deserialize(std::istream& is);
+    static void reload();
 
 private:
     static int counters[(int)IdType::COUNT];

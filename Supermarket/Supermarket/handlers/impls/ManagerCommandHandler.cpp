@@ -41,7 +41,7 @@ void ManagerCommandHandler::handle(const Vector<String>& tokens) {
 			System::refill(tokens[1]);
 		}
 		else if (command == String("load-gift-cards")) {
-			//System::refillGifts(tokens[1]);
+			//System::loadGifts(tokens[1]);
 		}
 		else { throw std::invalid_argument("Invalid command!"); }
 	}

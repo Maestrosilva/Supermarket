@@ -32,7 +32,8 @@ const Vector<Pair>& Transaction::getPairs() const { return pairs; }
 double Transaction::totalPrice() const { return total; }
 
 String Transaction::toString() const {
-    return String("Id: ") + id + " | CashierId: " + cashierId + " | Total: " + String::doubleToString(total, 2);
+    return String("Id: ") + id + String(" | CashierId: ") 
+        + cashierId + String(" | Total: ") + String::doubleToString(total, 2) + String(" lv.");
 }
 
 void Transaction::endTransaction() {

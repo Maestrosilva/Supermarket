@@ -47,7 +47,6 @@ void Cashier::deserialize(std::istream& is) {
 
 Cashier::~Cashier() {
     for (size_t i = 0; i < warnings.getLength(); i++) {
-        std::cout << "Deleting warning at index " << i << std::endl;
         delete warnings[i];
     }
     warnings.clear();
